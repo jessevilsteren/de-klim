@@ -1,0 +1,1378 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="De klim. Een bouwweek met Claude van Jesse van Vilsteren: drie speelbare levels uit zijn cv en twee zelfgebouwde skills.">
+<style>
+  html{color-scheme:light dark}
+  body{margin:0}
+  img{max-width:100%}
+  [hidden]{display:none !important}
+</style>
+<title>De klim</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=IBM+Plex+Mono:wght@400;500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+<style>
+/* Layout: één leeskolom met een roeibaan (2000 m) als voortgang; het dossier staat ernaast op breed scherm, eronder op smal. Bewust één donker thema: water bij ochtendlicht. */
+:root{
+  --bg:#0c2730;
+  --surface:#11343e;
+  --line:#2a5a64;
+  --fg:#e7efe9;
+  --muted:#97b6b3;
+  --accent:#f2c14e;
+  --accent-ink:#1f1a0c;
+  --mint:#86d3c3;
+  --good:#5fd68f;
+  --display:"Bricolage Grotesque","Arial Narrow",system-ui,sans-serif;
+  --body:"Source Serif 4",Georgia,"Times New Roman",serif;
+  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  color-scheme:dark;
+}
+/* Kleuren per level: Nereus bordeauxrood en wit, DMS donkerblauw en oranje. De berg: ochtend in de bergen */
+:root[data-level="home"]{--bg:#f2f4f8;--surface:#ffffff;--line:#d3d9e4;--fg:#1c2331;--muted:#5a6377;--accent:#e2582a;--accent-ink:#ffffff;--mint:#4f83bd;--m-back:#dde3ec;--m-front:#c6d0de;--m-snow:#ffffff;color-scheme:light}
+:root[data-level="0"]{--bg:#3b0f1c;--surface:#4c1727;--line:#7a3445;--fg:#fbf5f6;--muted:#d9b6be;--accent:#ffffff;--accent-ink:#3b0f1c;--mint:#f1cfd6}
+:root[data-level="2"]{--bg:#10261f;--surface:#173529;--line:#30584a;--fg:#f1f4ee;--muted:#a8c0b4;--accent:#e9c46a;--accent-ink:#221a05;--mint:#9cd3bd}
+:root[data-level="1"]{--bg:#0b2236;--surface:#11304a;--line:#2a5170;--fg:#eef3f8;--muted:#9fb6cb;--accent:#f5913a;--accent-ink:#241304;--mint:#8fc6ef}
+html,body{background:var(--bg);color:var(--fg);transition:background-color .5s ease,color .5s ease}
+body{
+  font-family:var(--body);font-size:17px;line-height:1.6;
+  padding-left:max(16px,env(safe-area-inset-left,0px));
+  padding-right:max(16px,env(safe-area-inset-right,0px));
+  padding-block:20px 56px;
+}
+.top{max-width:1040px;margin:0 auto;display:flex;justify-content:space-between;align-items:baseline;gap:8px 16px;flex-wrap:wrap}
+.brand{font-family:var(--display);font-weight:700;font-size:16px}
+.brand b{color:var(--accent);font-weight:700}
+.label{font-family:var(--mono);font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+
+/* De roeibaan */
+.lane{max-width:1040px;margin:14px auto 26px;position:relative;height:60px}
+.track{position:absolute;left:22px;right:22px;top:0;bottom:0}
+.water{position:absolute;left:0;right:0;top:27px;height:2px;background:repeating-linear-gradient(90deg,var(--line) 0 12px,transparent 12px 18px)}
+.buoy{position:absolute;top:21px;width:14px;height:14px;border-radius:50%;background:var(--bg);border:2px solid var(--line);transform:translateX(-50%);transition:background .3s,border-color .3s}
+.buoy.done{background:var(--accent);border-color:var(--accent)}
+.tick{position:absolute;top:42px;transform:translateX(-50%);font-family:var(--mono);font-size:11px;color:var(--muted);white-space:nowrap}
+.boat{position:absolute;top:28px;width:66px;height:44px;transform:translate(-50%,-50%);transition:left .8s cubic-bezier(.3,.7,.2,1);z-index:2}
+.boat svg{display:block;width:100%;height:100%;overflow:visible}
+.boat .hull{fill:var(--mint)}
+.boat .seat{fill:var(--bg)}
+.boat .oar line{stroke:var(--fg);stroke-width:1.6;stroke-linecap:round}
+.boat .oar rect{fill:var(--accent)}
+.boat .oar{transform-box:view-box}
+.boat .oar.top{transform-origin:33px 19px;transform:rotate(-28deg)}
+.boat .oar.bot{transform-origin:33px 25px;transform:rotate(28deg)}
+.boat.rowing .oar.top{animation:oarTop .4s ease-in-out 2}
+.boat.rowing .oar.bot{animation:oarBot .4s ease-in-out 2}
+@keyframes oarTop{0%,100%{transform:rotate(-28deg)}55%{transform:rotate(34deg)}}
+@keyframes oarBot{0%,100%{transform:rotate(28deg)}55%{transform:rotate(-34deg)}}
+.lane{height:64px}
+.water{top:27px}
+
+.wrap{max-width:1040px;margin:0 auto;display:grid;grid-template-columns:minmax(0,1fr) 290px;gap:44px;align-items:start}
+@media (max-width:840px){.wrap{grid-template-columns:minmax(0,1fr);gap:32px}}
+main{min-width:0}
+
+h1,h2{font-family:var(--display);font-weight:700;line-height:1.05;text-wrap:balance;margin:.25em 0 .5em}
+h1{font-size:clamp(42px,8vw,80px);letter-spacing:-.025em}
+h2{font-size:clamp(28px,4.6vw,42px);letter-spacing:-.015em}
+.kicker{font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
+.story p{margin:0 0 1em;max-width:62ch}
+.lead{font-size:19px}
+.q{font-family:var(--display);font-weight:700;font-size:21px;margin:1.3em 0 .7em;text-wrap:balance}
+
+.opts{display:grid;gap:10px}
+.opt{
+  appearance:none;display:grid;grid-template-columns:30px minmax(0,1fr);gap:10px;text-align:left;
+  width:100%;padding:14px 16px;border:1px solid var(--line);border-radius:10px;cursor:pointer;
+  background:var(--surface);color:var(--fg);font:inherit;font-size:16px;line-height:1.5;
+  transition:border-color .2s,background .2s,opacity .2s;
+}
+.opt:hover:not(:disabled){border-color:var(--mint)}
+.opt:focus-visible,.btn:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.opt .k{font-family:var(--mono);font-size:14px;color:var(--muted);padding-top:2px}
+.opt:disabled{cursor:default;opacity:.55}
+.opt.picked{opacity:1;border-color:var(--fg)}
+.opt.jesse{opacity:1;border-color:var(--accent)}
+.opt .tag{display:block;margin-top:6px;font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase}
+.opt.picked .tag{color:var(--fg)}
+.opt.jesse .tag{color:var(--accent)}
+
+.reveal{margin-top:18px;display:grid;gap:14px}
+.note{color:var(--muted);max-width:62ch;margin:0}
+.voice{background:var(--accent);color:var(--accent-ink);border-radius:12px;padding:18px 20px;display:grid;gap:6px}
+.voice p{margin:0;max-width:60ch}
+.voice .who{font-family:var(--mono);font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--accent-ink);opacity:.75}
+.voice p{font-size:17.5px}
+.extra{border:1px dashed var(--accent);border-radius:12px;padding:16px 20px;display:grid;gap:6px}
+.extra p{margin:0;max-width:60ch}
+
+.btn{appearance:none;border:0;border-radius:999px;padding:12px 22px;cursor:pointer;font-family:var(--display);font-weight:700;font-size:16px;background:var(--accent);color:var(--accent-ink);justify-self:start}
+.btn.ghost{background:transparent;color:var(--fg);border:1px solid var(--line)}
+.row{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
+
+.levels{display:flex;gap:6px;flex-wrap:wrap}
+.levels button{appearance:none;font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);background:transparent;border:1px solid var(--line);border-radius:999px;padding:5px 11px;cursor:pointer}
+.levels button:hover{border-color:var(--mint);color:var(--fg)}
+.levels button[aria-current="true"]{color:var(--accent-ink);background:var(--accent);border-color:var(--accent)}
+.levels button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.mail{border:1px solid var(--line);border-radius:12px;background:var(--surface);padding:14px 18px;font-size:15px;line-height:1.55;margin:1.2em 0;max-width:62ch}
+.mail-h{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--line);padding-bottom:8px;margin-bottom:12px}
+.mail p{margin:0 0 .7em}
+.mail p:last-child{margin-bottom:0}
+.slot{border:1px dashed var(--accent);border-radius:8px;padding:8px 10px;color:var(--accent);font-family:var(--mono);font-size:13px}
+/* Wereld van level 2: teller en aftellen */
+.world{max-width:1040px;margin:14px auto 34px;display:grid;grid-template-columns:auto minmax(0,1fr);gap:32px;align-items:end}
+@media (max-width:560px){.world{grid-template-columns:minmax(0,1fr);gap:16px}}
+.w-days .label{display:block;margin-bottom:6px}
+.w-big{display:block;font-family:var(--display);font-weight:700;font-size:clamp(30px,5vw,44px);line-height:1;color:var(--accent);font-variant-numeric:tabular-nums;min-width:5.5ch}
+.w-meter{min-width:0}
+.w-top{display:flex;justify-content:space-between;gap:12px;align-items:baseline;margin-bottom:26px}
+.w-val{font-family:var(--mono);font-size:13px;color:var(--fg);text-align:right}
+.w-bar{position:relative;height:14px;border-radius:7px;background:var(--surface);border:1px solid var(--line)}
+.w-fill{position:absolute;top:0;bottom:0;left:0;width:0;border-radius:7px;background:var(--mint);transition:width 1.2s cubic-bezier(.3,.7,.2,1)}
+.w-goal{position:absolute;top:-6px;bottom:-6px;left:100%;width:2px;margin-left:-2px;background:var(--accent);transition:left 1s cubic-bezier(.3,.7,.2,1)}
+.world:not(.broken) .w-goal span{left:auto;right:0;transform:none}
+.world.broken .w-fill{background:var(--accent)}
+.world.broken .w-val{color:var(--accent);font-weight:500}
+.w-goal span{position:absolute;top:-19px;left:50%;transform:translateX(-50%);font-family:var(--mono);font-size:11px;color:var(--accent);white-space:nowrap}
+.w-scale{display:flex;justify-content:space-between;font-family:var(--mono);font-size:11px;color:var(--muted);margin-top:6px}
+@media (prefers-reduced-motion:reduce){.w-fill,.w-goal{transition:none}}
+
+.r-note{display:grid;gap:4px}
+.r-note p{margin:0;color:var(--muted);max-width:62ch}
+.lesson{margin:28px 0 8px;display:grid;gap:8px}
+.lesson p{margin:0;font-family:var(--display);font-weight:500;font-size:clamp(20px,2.6vw,24px);line-height:1.35;max-width:40ch;text-wrap:balance}
+.after{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:20px 32px;margin:24px 0;padding-top:20px;border-top:1px solid var(--line)}
+.after > div{display:grid;gap:6px;min-width:0}
+.after p{margin:0;font-size:16px}
+.route{margin:8px 0 24px;border-top:1px solid var(--line);padding-top:14px}
+.route summary{cursor:pointer;font-family:var(--mono);font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+.route summary:hover{color:var(--fg)}
+.route summary:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.route .tablewrap{margin-top:12px}
+
+/* Wie zegt wat */
+.say{margin:1.3em 0;display:grid;gap:6px;max-width:40ch}
+.say figcaption{font-family:var(--mono);font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+.say blockquote{margin:0;font-family:var(--display);font-weight:500;font-size:clamp(20px,3vw,25px);line-height:1.3;color:var(--accent);padding-left:16px;border-left:3px solid var(--accent)}
+
+/* Zelfde keuze als Jesse */
+.opt{position:relative}
+.opt.match{opacity:1;border-color:var(--good);box-shadow:0 0 0 1px var(--good)}
+.opt.match .tag{color:var(--good)}
+.opt.kept{opacity:.85;border-style:dashed}
+.spark{position:absolute;width:7px;height:7px;border-radius:50%;pointer-events:none;left:var(--x);top:var(--y);background:var(--c);animation:spark .9s cubic-bezier(.2,.7,.3,1) forwards}
+@keyframes spark{from{transform:translate(-50%,-50%) scale(1);opacity:1}to{transform:translate(calc(-50% + var(--dx)),calc(-50% + var(--dy))) scale(.2);opacity:0}}
+.score{margin:0 0 12px;font-family:var(--mono);font-size:12px;letter-spacing:.06em;color:var(--good)}
+
+/* Overgang tussen stappen: meegetrokken naar de volgende */
+.leave{animation:leave .28s ease-in forwards}
+@keyframes leave{to{opacity:0;transform:translateX(-40px)}}
+.rise{animation:rise .4s ease}
+@keyframes rise{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+/* Slepen */
+.drag-hint{margin:-.3em 0 .8em;font-family:var(--mono);font-size:12px;letter-spacing:.06em;color:var(--muted)}
+.opt[data-drag]{cursor:grab;touch-action:none}
+.opt.dragging{opacity:.4}
+.ghost{position:fixed;z-index:50;pointer-events:none;max-width:min(340px,80vw);padding:10px 14px;border-radius:10px;background:var(--accent);color:var(--accent-ink);font-size:14px;line-height:1.4;transform:translate(-20px,-50%) rotate(-2deg);box-shadow:0 10px 30px rgba(0,0,0,.35);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.slot{transition:background .2s,border-color .2s,transform .2s}
+.slot.over{background:color-mix(in srgb,var(--accent) 18%,transparent);transform:scale(1.02)}
+.slot.filled{font-family:var(--body);font-size:15px;color:var(--fg);border-style:solid;border-color:var(--accent)}
+.slot.both p{margin:0 0 .4em}
+.slot.landed{animation:landed .45s ease}
+@keyframes landed{0%{transform:scale(1.04)}100%{transform:none}}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:4px 0 0}
+.chip{position:relative;font-family:var(--mono);font-size:12px;letter-spacing:.04em;padding:6px 12px;border-radius:999px;border:1px solid var(--line)}
+.chip.jesse{border-color:var(--accent);color:var(--accent)}
+.chip.match{border-color:var(--good);color:var(--good);box-shadow:0 0 0 1px var(--good)}
+
+/* Wereld van level 3: de trechter */
+.funnel{grid-template-columns:auto minmax(0,1fr);align-items:center}
+.f-steps{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
+.f-steps li{font-family:var(--mono);font-size:12px;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:6px 12px;transition:all .4s}
+.f-steps li b{font-weight:500;color:var(--fg)}
+.f-steps li.on{border-color:var(--accent);color:var(--accent-ink);background:var(--accent)}
+.f-steps li.on b{color:var(--accent-ink)}
+.f-steps li.past{opacity:.55}
+
+/* Sorteerkaartjes */
+.cards{display:grid;gap:12px;margin-top:6px}
+.card{position:relative;border:1px solid var(--line);border-radius:12px;background:var(--surface);padding:14px 16px;display:grid;gap:8px}
+.card-h{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}
+.card-h b{font-family:var(--display);font-size:19px}
+.card .step{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.card p{margin:0;font-size:15.5px;line-height:1.5}
+.card-btns{display:flex;gap:8px;flex-wrap:wrap}
+.card-btns button{appearance:none;font:inherit;font-size:14px;padding:7px 14px;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--fg);cursor:pointer}
+.card-btns button:hover:not(:disabled){border-color:var(--accent)}
+.card-btns button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.card-btns button.on{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.card-btns button:disabled{cursor:default}
+.card.match{border-color:var(--good);box-shadow:0 0 0 1px var(--good)}
+.card .verdict{font-size:14.5px;color:var(--muted)}
+.card .verdict strong{color:var(--fg)}
+.card.match .verdict strong{color:var(--good)}
+
+/* De berg */
+.is-home .lane,.is-home .world,.is-home .wrap{display:none}
+.home{max-width:1040px;margin:8px auto 0;display:grid;gap:18px}
+.home-head h1{margin:.1em 0 .25em}
+.home-head .lead{margin:0;max-width:60ch}
+.mtn{position:relative;width:100%;aspect-ratio:1000/560;max-width:100%;border-radius:16px;overflow:hidden;background:radial-gradient(circle at 74% 14%,color-mix(in srgb,var(--accent) 34%,transparent),transparent 42%),linear-gradient(to bottom,color-mix(in srgb,var(--accent) 10%,var(--bg)),var(--bg) 70%)}
+.mtn svg{position:absolute;inset:0;width:100%;height:100%}
+.m-back{fill:var(--m-back,var(--surface))}
+.m-front{fill:var(--m-front,var(--line))}
+.m-snow{fill:var(--m-snow,var(--fg))}
+.m-route{fill:none;stroke:var(--muted);stroke-width:3;stroke-dasharray:2 10;stroke-linecap:round;opacity:.9}
+.m-route.alt{stroke:var(--mint);opacity:.7}
+.m-done{fill:none;stroke:var(--accent);stroke-width:4;stroke-linecap:round;stroke-dasharray:var(--len) var(--len);stroke-dashoffset:var(--off);transition:stroke-dashoffset 1.2s ease}
+.stop{position:absolute;transform:translate(-50%,-50%);display:flex;align-items:center;gap:8px;appearance:none;border:0;background:none;padding:0;color:var(--fg);cursor:pointer;font:inherit}
+.stop .dot{flex:none;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-family:var(--mono);font-size:12px;background:var(--surface);border:2px solid var(--muted);transition:transform .2s,background .2s,border-color .2s}
+.stop.tool .dot{border-color:var(--mint)}
+.stop.done .dot{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.stop.on .dot{transform:scale(1.25);border-color:var(--fg);box-shadow:0 0 0 4px color-mix(in srgb,var(--accent) 35%,transparent)}
+.stop .lbl{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap;background:color-mix(in srgb,var(--surface) 85%,transparent);padding:2px 6px;border-radius:4px}
+.stop.left{flex-direction:row-reverse}
+.stop:focus-visible .dot{outline:2px solid var(--accent);outline-offset:3px}
+@media (max-width:700px){.stop .lbl{display:none}}
+.stoplist{display:flex;flex-wrap:wrap;gap:6px}
+.stoplist button{appearance:none;font-family:var(--mono);font-size:12px;letter-spacing:.04em;color:var(--muted);background:transparent;border:1px solid var(--line);border-radius:999px;padding:5px 11px;cursor:pointer}
+.stoplist button[aria-selected="true"]{color:var(--accent-ink);background:var(--accent);border-color:var(--accent)}
+.stoplist button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.panel{border:1px solid var(--line);border-radius:14px;background:var(--surface);box-shadow:0 8px 30px rgba(28,35,49,.06);padding:20px 22px;display:grid;gap:12px;max-width:760px}
+.panel h2{margin:0;font-size:clamp(24px,3.6vw,32px)}
+.panel p{margin:0;max-width:62ch}
+.panel .cv{font-family:var(--mono);font-size:12.5px;color:var(--muted);border-left:3px solid var(--accent);padding-left:10px}
+.panel .used{font-size:14.5px;color:var(--muted)}
+.panel .used b{color:var(--fg);font-weight:600}
+.panel .used.mine{color:var(--fg);border-left:3px solid var(--mint);padding-left:10px}
+.panel .btn{margin-top:4px}
+
+/* Dossier */
+.dossier{position:sticky;top:max(16px,env(safe-area-inset-top,0px));border:1px dashed var(--line);border-radius:14px;padding:18px}
+@media (max-width:840px){.dossier{position:static}}
+.dossier h3{margin:0 0 4px;font-family:var(--mono);font-weight:500;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--mint)}
+.dossier .hint{margin:0 0 12px;font-size:14px;color:var(--muted)}
+.dossier ol{margin:0;padding:0;list-style:none;display:grid;gap:12px;counter-reset:c}
+.dossier li{counter-increment:c;display:grid;grid-template-columns:22px minmax(0,1fr);gap:6px;font-size:14.5px;line-height:1.45}
+.dossier li::before{content:counter(c);font-family:var(--mono);font-size:12px;color:var(--muted);padding-top:2px}
+.dossier li.new{animation:land .6s ease}
+.dossier .empty{font-size:14px;color:var(--muted);font-style:italic}
+@keyframes land{from{background:color-mix(in srgb,var(--accent) 20%,transparent)}to{background:transparent}}
+
+.routes{width:100%;border-collapse:collapse;font-size:15px}
+.routes th,.routes td{text-align:left;padding:8px 10px 8px 0;border-bottom:1px solid var(--line);vertical-align:top}
+.routes th{font-family:var(--mono);font-weight:500;font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+.routes td.m{font-family:var(--mono);font-size:13px;color:var(--muted);white-space:nowrap;font-variant-numeric:tabular-nums}
+.routes .same{color:var(--mint)}
+.tablewrap{overflow-x:auto}
+
+.fade{animation:fadein .5s cubic-bezier(.2,.8,.2,1)}
+@keyframes fadein{from{opacity:0;transform:translateX(44px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){
+  .fade,.rise,.leave,.spark,.boat.rowing .oar,.dossier li.new{animation:none}
+  .boat,.buoy{transition:none}
+}
+</style>
+</head>
+<body>
+
+
+<header class="top">
+  <div class="brand">De klim <b>·</b> Jesse van Vilsteren</div>
+  <nav class="levels" id="lvl" aria-label="Levels"></nav>
+</header>
+
+<section class="home" id="home" hidden>
+  <div class="home-head">
+    <p class="kicker">Een bouwweek met Claude</p>
+    <h1>De klim</h1>
+    <p class="lead">Een week bouwen met Claude. Drie verhalen uit mijn cv, als spel. En twee skills die ik voor mijn eigen werk maakte. Klik op een punt van de berg.</p>
+  </div>
+  <div class="mtn" id="mtn">
+    <svg viewBox="0 0 1000 560" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+      <path class="m-back" d="M0 560 L180 300 L300 380 L470 170 L560 250 L740 60 L900 260 L1000 210 L1000 560 Z"/>
+      <path class="m-front" d="M0 560 L120 470 L260 420 L380 330 L470 300 L600 190 L740 60 L830 200 L900 300 L1000 360 L1000 560 Z"/>
+      <path class="m-snow" d="M740 60 L700 112 L726 104 L744 122 L768 100 L790 118 Z"/>
+      <path class="m-route" d="M110 520 C170 505 230 470 290 455 S400 410 430 380 S520 320 540 300 S610 240 640 220 S700 140 730 92"/>
+      <path class="m-route alt" d="M290 455 C420 450 700 380 820 340 S800 240 790 205 S750 120 730 92"/>
+      <path class="m-done" id="routeDone" d="M110 520 C170 505 230 470 290 455 S400 410 430 380 S520 320 540 300 S610 240 640 220 S700 140 730 92"/>
+    </svg>
+    <div id="stops"></div>
+  </div>
+  <div class="stoplist" id="stoplist" role="tablist" aria-label="Punten op de route"></div>
+  <article class="panel" id="panel" aria-live="polite"></article>
+</section>
+
+<div class="lane" aria-hidden="true"><div class="track" id="track"><div class="water"></div></div></div>
+
+<div class="world" id="world" hidden aria-hidden="true">
+  <div class="w-days"><span class="label">Tot de deadline van 30 april</span><span class="w-big" id="wdays"></span></div>
+  <div class="w-meter">
+    <div class="w-top"><span class="label">Aanmeldingen</span><span class="w-val" id="wval"></span></div>
+    <div class="w-bar"><div class="w-fill" id="wfill"></div><div class="w-goal" id="wgoal"><span>doel 200</span></div></div>
+    <div class="w-scale"><span>0</span><span id="wmax"></span></div>
+  </div>
+</div>
+
+<div class="world funnel" id="funnel" hidden aria-hidden="true">
+  <div class="f-num"><span class="label" id="flabel">Longlist</span><span class="w-big" id="fnum">0</span></div>
+  <ol class="f-steps" id="fsteps">
+    <li><b>118</b> longlist</li><li><b>22</b> in het boekje</li><li><b>10 à 15</b> verder onderzocht</li>
+  </ol>
+</div>
+
+<div class="wrap">
+  <main id="stage" aria-live="polite"></main>
+  <aside class="dossier" aria-label="Dossier">
+    <h3>Dossier</h3>
+    <p class="score" id="score" hidden></p>
+    <p class="hint">Wat je onderweg ziet en hoort. Leg het naast elkaar.</p>
+    <ol id="clues"></ol>
+  </aside>
+</div>
+
+<script>
+/* ===== Inhoud: dit deel is het verhaal. De motor eronder blijft hetzelfde voor elk level. ===== */
+const LEVEL1 = {
+  short: "Nereus",
+  startLabel: "Start bij 0 meter",
+  nextLabel: "Verder roeien",
+  finishLabel: "Naar de finish",
+  againLabel: "Opnieuw roeien",
+  finishKicker: "Finish · 2000 m",
+  kicker: "Level 1 · Roeivereniging Nereus, 2023-2024",
+  title: "De stille commissie",
+  intro: [
+    "Je speelt Jesse, een jaar fulltime bestuurslid bij een roeivereniging met ruim 1.100 leden. Jouw portefeuille is het competitieroeien. Dat is 70 procent van de leden.",
+    "De commissie die de eerstejaars begeleidt, zo'n 350 roeiers plus hun coaches, is de grootste van de vereniging. En er gaat iets mis."
+  ],
+  howto: "Jij bent Jesse, dus de keuzes staan in de ik-vorm. Er is geen fout antwoord, maar kies je wat Jesse echt deed, dan zie je dat meteen. Wat je leert, komt in je dossier.",
+  scenes: [
+    {
+      title: "De sfeer kelderde",
+      text: [
+        "De commissie zat altijd vol ideeën. De laatste tijd komt er niets meer, en de vergaderingen zijn stroef.",
+        "Je denkt eerst dat het gewoon veel is. Borrels door de week, wedstrijden in het weekend."
+      ],
+      question: "Wat doe je?",
+      options: [
+        { text: "Ik ontlast de commissie. Minder taken, minder borrels, dan komt de energie vanzelf terug.",
+          note: "Je handelt op je eerste gedachte. Klopt die niet, dan los je een probleem op dat er niet is, en voelt de commissie zich ook nog onbegrepen." },
+        { text: "Ik kijk het nog even aan. Een slechte periode is nog geen patroon." },
+        { text: "Ik spreek de commissie aan op haar inzet. Dit is hun taak.",
+          note: "Aanspreken op inzet gaat ervan uit dat het aan hen ligt. Dat weet je nog niet, en wie zich aangevallen voelt, vertelt je niet meer wat er speelt." }
+      ],
+      jesse: 1,
+      why: "Hé? Wat is hier aan de hand? Het lijkt net of de lol en de creativiteit verdwenen zijn. Even in de gaten houden.",
+      clue: "De sfeer kelderde en de ideeën droogden op. Druk van borrels en wedstrijden is een verklaring, nog geen bewijs."
+    },
+    {
+      title: "“Het bestuur zal het wel weer in de weg zitten”",
+      text: [
+        "Het blijkt geen dip. Een commissielid oppert een idee, en meteen zegt een ander:"
+      ],
+      quote: "Ja, maar het bestuur zal het wel weer in de weg zitten.",
+      quoteBy: "Een commissielid, in de vergadering",
+      text2: [
+        "Daarna gaat het van kwaad tot erger. Plannen gaan door zonder overleg, en het bestuur wordt genegeerd. Je bestuursgenoten zijn er klaar mee."
+      ],
+      question: "Je zit tussen twee groepen vrijwilligers in. Wat is je volgende stap?",
+      options: [
+        { text: "Ik sta achter mijn bestuur. Afspraken zijn afspraken, de commissie moet zich eraan houden.",
+          note: "Formeel klopt het. Maar je kiest een kant voordat je weet wat er speelt. En de commissie verliest haar laatste lijntje met het bestuur. Dat ben jij." },
+        { text: "Ik zet het op de agenda van de commissie en vraag de hele groep om uitleg.",
+          note: "Open, maar in een groep die al gefrustreerd is, wordt dat snel een tribunaal. Dan hoor je de luidste stem, niet het hele verhaal." },
+        { text: "Ik vraag de voorzitter van de commissie apart wat er speelt." }
+      ],
+      jesse: 2,
+      why: "Ik weet het zeker, hier zit iets dwars. Ik vraag aan degene met het overzicht wat er speelt.",
+      clue: "In elke vergadering dezelfde zin. De commissie verwacht een nee, nog voordat ze iets vraagt."
+    },
+    {
+      title: "Wat bleek",
+      text: [
+        "Je vraagt de voorzitter van de commissie wat er speelt. Ze kwamen met plannen en kregen telkens een nee terug, zonder uitleg en zonder alternatief."
+      ],
+      quote: "Nee, en zoek het maar uit.",
+      quoteBy: "Zo hoort de commissie het bestuur",
+      question: "Leg je dossier ernaast. Wat is het echte probleem?",
+      options: [
+        { text: "De commissie is recalcitrant geworden.",
+          note: "Dat is wat het bestuur ziet. Maar het gedrag is een gevolg, geen oorzaak. Pak je het gedrag aan, dan komt het terug." },
+        { text: "Het bestuur zegt te vaak nee.",
+          note: "Dichtbij. Maar dan wordt de oplossing vaker ja zeggen. Soms is een nee terecht. Het aantal is het probleem niet." },
+        { text: "Het nee komt zonder alternatief. De commissie loopt telkens dood." }
+      ],
+      jesse: 2,
+      why: "Een nee is niet erg. Een nee waar je niets mee kunt, schiet de creativiteit dood. Dan blijft er voor de commissie maar één route over. Het zelf doen, zonder overleg.",
+      clue: "Het bestuur geeft een kaal nee. De commissie hoort ‘zoek het maar uit’, en dat doet ze dus ook."
+    },
+    {
+      title: "Laten razen",
+      text: [
+        "Je brengt het op in een vergadering met de hele commissie. Zodra het op tafel ligt, komt alles eruit."
+      ],
+      question: "De commissie stoomt af. Wat doe je?",
+      options: [
+        { text: "Ik laat ze razen en luister. Daarna stel ik voor om het met het hele bestuur te bespreken." },
+        { text: "Ik leg uit waarom het bestuur destijds nee zei. Daar waren goede redenen voor.",
+          note: "Dan verdedig je het bestuur in de kamer waar het vertrouwen al op is. De commissie hoort: weer een nee, nu met uitleg." },
+        { text: "Ik beloof dat het vanaf nu anders gaat.",
+          note: "Een belofte die je niet alleen kunt waarmaken, want het bestuur weet nog van niets. Valt hij om, dan is ook het vertrouwen in jou weg." }
+      ],
+      jesse: 0,
+      why: "Ze moesten eerst gehoord worden, voordat ze ergens anders naar konden luisteren. En ik beloofde niets wat ik niet alleen kon regelen.",
+      clue: "De frustratie is echt en mag er zijn. De oplossing ligt niet bij de commissie alleen, en ook niet bij jou."
+    },
+    {
+      title: "Het bestuur wil niet",
+      text: [
+        "Je stelt voor om met bestuur en commissie om tafel te gaan. Het bestuur wil niet. Niemand zoekt de confrontatie, en aan tafel moet je ook je eigen deel toegeven."
+      ],
+      question: "Hoe krijg je het bestuur mee?",
+      options: [
+        { text: "Ik laat het rusten. De commissie draait nog, en een conflict kost meer dan het oplevert.",
+          note: "Dan blijft het patroon staan, en dat patroon was al aan het escaleren. De grootste commissie loopt verder leeg." },
+        { text: "Ik maak het groter dan een ruzie. Met onze grootste commissie loopt iets structureel fout. Dat kunnen we niet laten passeren." },
+        { text: "Ik dreig de commissie vrij te geven. Dan hoeven de acht leden hun functie niet meer uit te oefenen. Het bestuur moet dan zelf zo'n 350 eerstejaars en hun coaches begeleiden." }
+      ],
+      jesse: 1,
+      why: "Ik haalde het weg bij wie er gelijk had, en maakte er een vraag over de vereniging van. Dat konden ze niet wegwuiven.",
+      keep: 2,
+      keepTag: "Jesse's troef, achter de hand",
+      extra: "De dreiging hierboven had Jesse echt achter de hand, als laatste troef. Hij hoefde hem niet te spelen. Kijk wel wat die zet is: een nee, en zoek het maar uit. Precies wat de commissie van het bestuur kreeg.",
+      clue: "Het bestuur ontwijkt de confrontatie, en daarmee zijn eigen rol. Het gaat niet om wie gelijk heeft, maar om de grootste commissie van de vereniging."
+    },
+    {
+      title: "Aan tafel",
+      text: [
+        "Beide groepen zitten voltallig aan tafel. Iedereen heeft een lijstje."
+      ],
+      question: "Hoe leid je dit gesprek?",
+      options: [
+        { text: "Frustratie mag eruit, met de vinger wijzen niet. We praten over hoe het voortaan gaat." },
+        { text: "Ik laat beide kanten hun verhaal doen, en dan kijken we wie gelijk heeft.",
+          note: "Dan wordt het een rechtszaak. Eén kant verliest, en die kant zit volgende maand nog steeds in de vereniging." },
+        { text: "Ik leg mijn eigen oplossing op tafel, dan zijn we snel klaar.",
+          note: "Snel, maar dan is het jouw afspraak. Een afspraak die beide kanten zelf maken, houden ze langer vol." }
+      ],
+      jesse: 0,
+      why: "Wijzen gaat over het verleden en levert niets op. Frustratie mocht er zijn, maar niet doorschieten, want er moest een werkbare uitkomst komen.",
+      clue: "Ruimte voor frustratie, begrensd op het doel. Het gesprek gaat over de regel, niet over de schuldigen."
+    }
+  ],
+  finish: {
+    title: "Nee, maar dit kan wel",
+    quote: "Nee, maar dit kan wel.",
+    quoteBy: "De nieuwe afspraak",
+    text: [
+      "Uit het gesprek komt één afspraak. Een kaal nee mag niet meer."
+    ],
+    epilogue: "Na een paar maanden vielen bestuursleden terug in het kale nee. Jesse kaartte het opnieuw aan. Terugkomen op een afspraak kost minder moeite dan hem maken.",
+    now: "Nu zou ik elke maand één minuut inplannen in de bestuursvergadering. Hoeveel nee's kregen een alternatief? Dan zie je terugval op tijd.",
+    lesson: "De vraag waarmee het binnenkwam was een commissie die niet meer meewerkte. Het echte probleem zat in de vorm van een nee."
+  }
+};
+
+const LEVEL2 = {
+  short: "DMS",
+  startLabel: "Start de campagne",
+  nextLabel: "Verder",
+  finishLabel: "Naar de deadline",
+  againLabel: "Campagne opnieuw starten",
+  finishKicker: "Deadline · 30 april",
+  world: {
+    type: "counter",
+    intro:  { days: "start", val: "0", fill: 0 },
+    finish: { days: "deadline", val: "500+", breakthrough: true }
+  },
+  kicker: "Level 2 · The Next Web, Data Market Services",
+  title: "De lege lijst",
+  intro: [
+    "Je speelt Jesse, in de innovatieconsultancy van The Next Web. De klus: startups werven voor Data Market Services, een door de EU gefinancierd programma voor de Europese data-economie. Je scout voor zeven internationale partners.",
+    "Het doel: 200 aanmeldingen en 25 deelnemers. Een database is er niet. Je begint met een lege lijst."
+  ],
+  howto: "Zelfde spelregels. Jij bent Jesse, en kies je wat hij echt deed, dan zie je dat meteen.",
+  scenes: [
+    {
+      title: "Het eerste bericht",
+      meter: { days: "start", val: "0", fill: 0 },
+      text: [
+        "Je schrijft de outreach naar startups. Het bericht staat, op één alinea na. Die alinea kan op twee manieren: wat ze krijgen als ze meedoen, of wat ze mislopen als ze het laten liggen."
+      ],
+      mail: {
+        head: "Het bericht, zoals startups het te zien kregen",
+        before: [
+          "Hi Maria,",
+          "Here at TNW we came across Sloth.ai and were amazed by seeing what you are about.",
+          "We are coordinating the 3rd edition of our start-up program to which I believe your team is a great fit. Be aware, the deadline closes on the 30th of april."
+        ],
+        after: [
+          "How does this sound? Let’s jump on call!",
+          "Cheers,\nJesse\nStartup Scout @ TNW"
+        ]
+      },
+      question: "Welke alinea zet je erin?",
+      dragHint: "Sleep een alinea in de mail, of klik erop.",
+      options: [
+        { drag: true, short: "de winstalinea", text: "“By joining the program before the 30th, you are offered mentorship, technical university courses in data and AI. DMS also facilitates personal connections to a network of early stage European investors.”",
+          note: "De meeste outreach klinkt zo, en het is een prima bericht. Maar dan weet je achteraf nog steeds niet of de andere versie beter had gewerkt." },
+        { drag: true, short: "de verliesalinea", text: "“After the 30th, you miss the opportunity of mentorship, technical university courses in data and AI. Not to mention the personal connections to a network of early stage European investors.”",
+          note: "Je gevoel klopt, zo bleek later. Maar zonder test blijft het een gok." },
+        { short: "allebei testen", text: "Ik kies niet blind. Ik test ze allebei.",
+          fill: [["Versie A", "By joining the program before the 30th, you are offered…"], ["Versie B", "After the 30th, you miss the opportunity of…"], ["Test", "willekeurig verdeeld over 41 startups"]] }
+      ],
+      jesse: 2,
+      why: "Ik had bouwstenen uit mijn studie die ik in de echte wereld wilde toepassen. Trial and error, ik testte.",
+      extraLabel: "De test",
+      extra: "41 startups kregen in Qualtrics willekeurig een van de twee versies te zien, en beoordeelden die alsof het een mail van TNW was. Het verliesbericht werd overtuigender gevonden. Een middelgroot verschil (Cohen’s d = 0,5, p = 0,08): net niet significant, in een kleine test.",
+      clue: "Bij 41 startups scoorde het verliesbericht beter. Klein onderzoek, middelgroot verschil. Wat het met aanmeldingen doet, zegt de test niet."
+    },
+    {
+      title: "Goede gesprekken, geen aanmeldingen",
+      meter: { days: "weken", val: "achter op schema", fill: 0.15 },
+      text: [
+        "De outreach loopt. Je hebt meerdere calls per dag, de gesprekken zijn positief, en het programma is solide: gratis, met mentoren, cursussen in data en AI, en een netwerk van investeerders.",
+        "Toch blijven de aanmeldingen achter. Het voelt als veel energie in iets dat niet rendeert."
+      ],
+      question: "Wat is hier aan de hand?",
+      options: [
+        { text: "Mensen doen dingen niet eerder dan nodig. Ook aanmelden." },
+        { text: "De pitch overtuigt niet.",
+          note: "Maar de gesprekken zijn positief. Als de pitch het probleem was, hoorde je dat in de calls." },
+        { text: "Het programma is niet aantrekkelijk genoeg.",
+          note: "Gratis, betaald door de EU, met mentoren, cursussen en investeerders. Dat is het niet." }
+      ],
+      jesse: 0,
+      why: "Mensen doen dingen niet eerder dan nodig is. Dus ook aanmelden. Het programma was het probleem niet, de timing wel.",
+      clue: "Goede gesprekken, achterblijvende aanmeldingen. Startups wachten tot het moet."
+    },
+    {
+      title: "Twee weken voor de deadline",
+      meter: { days: "14 dagen", val: "achter op schema", fill: 0.25 },
+      text: [
+        "Twee weken voor de deadline loopt het achter op schema. Het team belt en mailt al weken, en ziet er weinig van terug. De moed zakt."
+      ],
+      question: "Wat doe je met het team?",
+      options: [
+        { text: "Harder werken. Iedereen meer calls per dag.",
+          note: "Meer van hetzelfde, terwijl de energie al op is. Dat houdt niemand twee weken vol." },
+        { text: "Het doel bijstellen naar wat haalbaar lijkt.",
+          note: "Dan bescherm je de moed door de lat te laten zakken, vlak voor het moment waarop de aanmeldingen gaan komen." },
+        { text: "Power hours: vaste blokken waarin we tegelijk en naast elkaar in dezelfde lijst werken." }
+      ],
+      jesse: 2,
+      why: "Gezamenlijk zie je progressie. Het hield de moed erin, en de wervingsmachine draaide op volle toeren. De leadlist werd alleen maar langer.",
+      clue: "Het team zakt in omdat het werk geen zichtbaar resultaat geeft. Samen werken maakt voortgang zichtbaar."
+    },
+    {
+      title: "De deadline als gereedschap",
+      meter: { days: "14 dagen", val: "achter op schema", fill: 0.25 },
+      meterAfter: { days: "1 dag", val: "het druppelt binnen", fill: 0.5 },
+      countdown: ["7 dagen", "5 dagen", "3 dagen", "1 dag"],
+      text: [
+        "Je weet nu dat startups wachten tot het moet. De deadline komt eraan, en daarmee het moment waarop ze gaan beslissen."
+      ],
+      question: "Wat doe je met die deadline?",
+      options: [
+        { text: "Verlengen. Dan hebben ze meer tijd.",
+          note: "Dan schuift het wachten gewoon mee. Een latere deadline is een later moment van beslissen." },
+        { text: "Een aftelreeks per mail: nog een week, nog vijf dagen, nog drie, de laatste dag." },
+        { text: "Eén herinnering, vlak voor de deadline.",
+          note: "Beter dan niets. Maar één moment kun je missen, en dan is het voorbij." }
+      ],
+      jesse: 1,
+      why: "Mensen moeten voelen wat ze kunnen missen. We bouwen momentum en voeren de druk op. Het is tenslotte iets wat je moet willen.",
+      clue: "Wachten tot het moet. Dus laat je het moment dat het moet vaker langskomen."
+    },
+    {
+      title: "Wat deed het?",
+      meter: { days: "deadline", val: "500+", breakthrough: true },
+      text: [
+        "De aanmeldingen druppelen binnen, en dan stromen ze. Bij de deadline staat de teller op meer dan 500. Het doel was 200. Alle 25 plekken worden gevuld."
+      ],
+      question: "Wat heeft dit veroorzaakt?",
+      options: [
+        { text: "Het verliesbericht. Dat scoorde beter in de test.",
+          note: "De test mat hoe overtuigend startups een bericht vonden, niet hoeveel er zich aanmeldden. Daar kun je dit niet aan ophangen." },
+        { text: "De power hours en de aftelreeks.",
+          note: "Misschien. Maar startups wachten sowieso tot de deadline. Hoeveel waren er ook zonder gekomen?" },
+        { text: "Dat weet ik niet precies. Er was geen vergelijking." }
+      ],
+      jesse: 2,
+      why: "Precies weten doe je het niet, er was geen controlegroep. Wel kregen we intern heel veel lof, ook van collega's die dit programma al vaker hadden begeleid. Dus ik denk wel dat we iets unieks hebben neergezet.",
+      clue: "Meer dan 500 aanmeldingen. Wat het veroorzaakte, kun je zonder vergelijking niet zeggen. Wat je gemeten hebt, wel."
+    }
+  ],
+  finish: {
+    title: "Meer dan 500",
+    text: [
+      "Meer dan 500 aanmeldingen, terwijl het doel 200 was. Alle 25 plekken gevuld. Het programma liep daarna nog twee keer, en geen editie kreeg meer aanmeldingen dan deze."
+    ],
+    quote: "Mensen wachten. Dus ontwerp je rond het wachten.",
+    quoteBy: "In één zin",
+    epilogue: "Een van de startups die Jesse zelf aandroeg, Uizard, werd later overgenomen door Miro.",
+    now: "Wat ik nu anders zou doen: de power hours vanaf het begin inplannen, niet pas als de moed zakt.",
+    lesson: "De vraag waarmee het binnenkwam: waarom melden ze zich niet aan? Het echte probleem was niet de pitch of het programma, maar het wachten. Startups melden zich pas aan als het moet, en het team zakte in omdat het zo lang niets terugzag."
+  }
+};
+
+const LEVEL3 = {
+  short: "CCC",
+  startLabel: "Open de longlist",
+  nextLabel: "Verder",
+  finishLabel: "Naar de uitslag",
+  againLabel: "Opnieuw scouten",
+  finishKicker: "Van 118 naar 10 à 15",
+  world: {
+    type: "funnel",
+    intro:  { n: 0, stage: 0 },
+    finish: { n: "10-15", stage: 2 }
+  },
+  kicker: "Level 3 · The Next Web, Copyright Clearance Center",
+  title: "118 kaartjes",
+  intro: [
+    "Je speelt Jesse, in de innovatieconsultancy van The Next Web. De klant is Copyright Clearance Center, kortweg CCC. CCC verkoopt onderzoekers toegang tot wetenschappelijke artikelen, via een platform dat RightFind heet.",
+    "CCC wil nieuwe digitale diensten aan dat platform toevoegen. Jij zoekt de technologiebedrijven die dat kunnen. Je werkt samen met Park 56. Zij zijn specialist in overnames in de uitgeefwereld, en kennen de markt van binnenuit."
+  ],
+  howto: "Zelfde spelregels. In dit level beoordeel je ook zelf bedrijven, net als Jesse.",
+  scenes: [
+    {
+      title: "De vraag",
+      meter: { n: 0, stage: 0 },
+      meterAfter: { n: 118, stage: 0 },
+      text: [
+        "In een workshop met het management van CCC is de vraag scherp gesteld."
+      ],
+      quote: "How might we bring new digital services to our RightFind customers?",
+      quoteBy: "De challenge van CCC",
+      text2: [
+        "Er is nog geen lijst met bedrijven. Je begint bij nul."
+      ],
+      question: "Hoe begin je met zoeken?",
+      options: [
+        { text: "Breed zoeken op trefwoorden als AI, onderzoek en publiceren.",
+          note: "Dan vind je honderden bedrijven en weet je niet welke ertoe doen. Een trefwoord zegt niets over wat een onderzoeker nodig heeft." },
+        { text: "Langs de stappen van een onderzoeker zoeken. Vinden, ophalen, ordenen en schrijven." },
+        { text: "CCC vragen welke bedrijven ze al kennen.",
+          note: "Handig als begin. Maar dan vind je wat de klant al weet, en daar huren ze je niet voor in." }
+      ],
+      jesse: 1,
+      why: "Mijn manager had met Park 56 de reis van een onderzoeker uitgetekend, in vier stappen. Ik zocht per stap. Dan weet je bij elk bedrijf waar het past.",
+      clue: "Zoek langs de reis van de onderzoeker. Dan weet je bij elk bedrijf waar het past."
+    },
+    {
+      type: "sort",
+      title: "De stapel",
+      meter: { n: 118, stage: 0 },
+      meterAfter: { n: 22, stage: 1 },
+      text: [
+        "Na weken scouten staan er 118 bedrijven op de longlist. Elk bedrijf krijgt een score van 1 tot 3 op vijf criteria. Relevantie voor CCC, zakelijke geloofwaardigheid, vernieuwing, het team, en hoe makkelijk het in te passen is.",
+        "Hieronder staan vijf voorbeelden. De namen zijn verzonnen, het soort bedrijf is echt."
+      ],
+      question: "Welke gaan door naar de shortlist?",
+      cards: [
+        { name: "Lumenread", step: "Vinden",
+          desc: "Zet bovenaan de zoekresultaten een korte samenvatting van elk artikel. Werkt via een koppeling met bestaande zoekplatforms. De oprichters werkten jaren bij een wetenschappelijke uitgever.",
+          pass: true, reason: "Relevant voor RightFind, makkelijk in te passen, en een team dat de uitgeefwereld kent." },
+        { name: "Podcite", step: "Andere vormen",
+          desc: "Maakt van een wetenschappelijk artikel een podcast van vijf minuten. Populair bij studenten.",
+          pass: false, reason: "Leuk idee. Maar de klanten van RightFind zijn onderzoekers in bedrijven, en die zoeken geen podcast. Lage relevantie." },
+        { name: "Grantwise", step: "Subsidies",
+          desc: "Helpt universiteiten hun subsidieaanvragen te beheren, van idee tot verantwoording.",
+          pass: false, reason: "Goed product, verkeerde klant. RightFind richt zich op onderzoek in bedrijven, zoals chemie, voeding en energie." },
+        { name: "Retractor", step: "Vinden",
+          desc: "Markeert in zoekresultaten artikelen die later zijn teruggetrokken of betwist. Klein team, nog geen grote klanten.",
+          pass: true, reason: "Hoog op vernieuwing en relevantie. Het team is nog dun, maar dit raakt een echt probleem van onderzoekers." },
+        { name: "Notebridge", step: "Ordenen",
+          desc: "Een referentiebeheerder die is gebouwd voor één farmaceut. Draait alleen op hun eigen servers.",
+          pass: false, reason: "Gebouwd voor één andere klant en niet los in te passen. Lage score op inpasbaarheid." }
+      ],
+      why: "Ik droeg de meeste bedrijven aan, pitchte ze in het team en bracht de scores uit. Aan het eind deden we samen een laatste check. Zo bleven er 22 over voor het boekje.",
+      clue: "Een goed product kan de verkeerde klant hebben. Relevantie voor RightFind gaat voor."
+    },
+    {
+      title: "De vertaling",
+      meter: { n: 22, stage: 1 },
+      text: [
+        "Bij elk bedrijf op de shortlist schrijf je een korte alinea voor CCC. De bedrijven beschrijven zichzelf in techniektaal, bijvoorbeeld zo."
+      ],
+      quote: "Een transformermodel indexeert volledige artikelen en ondersteunt semantisch zoeken met vectorembeddings.",
+      quoteBy: "De website van een bedrijf",
+      question: "Wat schrijf je voor CCC?",
+      options: [
+        { text: "Het bedrijf gebruikt de nieuwste AI-technologie.",
+          note: "Dat zegt elk bedrijf. CCC weet dan nog steeds niet wat het oplevert." },
+        { text: "Een onderzoeker vindt de juiste artikelen, ook als hij de goede zoekwoorden niet kent." },
+        { text: "Het model doorzoekt miljoenen artikelen per seconde.",
+          note: "Indrukwekkend. Maar snelheid is niet het probleem van een onderzoeker. Vinden wel." }
+      ],
+      jesse: 1,
+      why: "Ik schreef per bedrijf wat het de onderzoeker oplevert. Niet hoe de techniek werkt. Daar kan CCC iets mee.",
+      clue: "Vertaal techniek naar wat het de onderzoeker oplevert."
+    },
+    {
+      title: "Past het wel?",
+      meter: { n: 22, stage: 1 },
+      text: [
+        "Een bedrijf op je lijst scoort hoog op vernieuwing. Maar je weet niet of het in het systeem van CCC past. En je weet niet of onderzoekers er echt op zitten te wachten.",
+        "Het project is niche. Je kent deze wereld nog maar net."
+      ],
+      question: "Wat doe je?",
+      options: [
+        { text: "Ik schat het zelf in, op basis van de website.",
+          note: "Dan gok je op het moeilijkste criterium van allemaal. Een website vertelt je niet hoe een koppeling in de praktijk gaat." },
+        { text: "Ik laat het bedrijf vallen. Te onzeker.",
+          note: "Dan verlies je juist de bedrijven die het verschil kunnen maken. Vernieuwing en risico horen bij elkaar." },
+        { text: "Ik vraag het aan Park 56, de overnamespecialisten in de uitgeefwereld. En ik leer hoe zij het inschatten." }
+      ],
+      jesse: 2,
+      why: "Park 56 kon dit in het begin het beste inschatten. Nadat ze mij kort hadden ingewerkt, nam ik het gemakkelijk over in mijn eigen visie. Het project was erg niche, maar daarom wel mega interessant.",
+      clue: "Wat je niet weet, haal je op bij wie het wel weet. Daarna kun je het zelf."
+    },
+    {
+      title: "De board",
+      meter: { n: 22, stage: 1 },
+      meterAfter: { n: "10-15", stage: 2 },
+      text: [
+        "CCC wil het resultaat zien. Jij presenteert het technische en functionele deel aan hun Amerikaanse board.",
+        "Het is je laatste werkdag. Je account is al afgesloten, dus je hebt geen notities."
+      ],
+      question: "Waar begin je mee?",
+      options: [
+        { text: "Met de technologie. Hoe de bedrijven werken.",
+          note: "Dan verlies je de board in de eerste minuut. Zij beslissen over wat het hun klanten oplevert." },
+        { text: "Met wat het een onderzoeker oplevert, per stap van zijn werk." },
+        { text: "Met het getal. 118 bedrijven gescout.",
+          note: "Een groot getal laat zien hoeveel werk het was. Het zegt niet waarom het ertoe doet." }
+      ],
+      jesse: 1,
+      why: "Ik ging in op de toepassing. De technieken kende ik niet uit mijn hoofd, en notities had ik niet. Maar wat het een onderzoeker oplevert, dat wist ik wel. En daar ging het de board om.",
+      clue: "Voor een board begin je bij de waarde, niet bij de techniek."
+    }
+  ],
+  finish: {
+    title: "Van 118 naar 10 à 15",
+    text: [
+      "Van de 118 bedrijven kwamen er 22 in het boekje voor CCC. Daarvan gingen er 10 à 15 door naar het eerste commerciële onderzoek, samen met Park 56."
+    ],
+    quote: "Het gaat om wat de onderzoeker eraan heeft.",
+    quoteBy: "In één zin",
+    epilogue: "Een van de bedrijven die Jesse aandroeg, werd later overgenomen.",
+    now: "Wat ik hier leerde, gebruik ik nog steeds. Een onbekend domein binnenstappen, het me snel eigen maken, en de kenmerken vinden die voor de klant interessant zijn.",
+    lesson: "De vraag was welke technologie CCC moest toevoegen. Het echte probleem was wat een onderzoeker echt nodig heeft, en wat CCC kan inpassen."
+  }
+};
+
+const LEVELS = [LEVEL1, LEVEL2, LEVEL3];
+
+/* De berg: de route van de bouwweek. x en y in procenten van de tekening. */
+const STOPS_HOME = [
+  { id: "voet", n: "", label: "De voet", x: 11, y: 92.9, side: "right",
+    kicker: "Het begin",
+    title: "Wie er klimt",
+    text: [
+      "Ik ben Jesse van Vilsteren. Ik ben nieuwsgierig en zie casussen en klanten als puzzels. Ik stel het liefst vragen, of ontleed informatie tot er een nieuw inzicht uit komt.",
+      "Deze berg laat zien hoe ik werk. In drie levels speel je mij, in situaties die echt zijn gebeurd. Op de tweede route staan twee skills die ik bouwde, met hoe ik ze testte."
+    ] },
+  { id: "basecamp", n: "", label: "Basecamp", x: 29, y: 81.3, side: "left",
+    kicker: "Mijn werkplaats",
+    title: "Basecamp",
+    text: [
+      "Mijn vertrekpunt is een eigen ingerichte Claude-werkplek. Een project met vaste instructies, referentiebestanden over mijn werk, en twee eigen commando's.",
+      "Typ ik \u201clogboek\u201d, dan werkt Claude mijn processtatus bij. Typ ik \u201cprofiel\u201d, dan houdt het mijn profiel actueel. Alles op deze berg begon hier."
+    ],
+    used: "Een Claude-project met instructies, bestanden en vaste commando's." },
+  { id: "l1", n: "1", label: "Nereus", x: 43, y: 67.9, side: "left", level: 0,
+    kicker: "Etappe 1",
+    title: "De stille commissie",
+    cv: "Bestuurslid A.S.R.V. Nereus · roeivereniging met 1.100+ leden",
+    text: [ "Een commissie die niet meer meewerkt. Ligt het aan de commissie, of aan het bestuur? Je speelt mij, en kiest zelf." ],
+    mine: "Bij het testen zag ik dat niet duidelijk was wie wat zei. Nu heeft elke uitspraak een spreker. En na een keuze hoef je niet meer te scrollen, want dat brak de flow.",
+    used: "Een artifact: een webpagina met eigen link. Ik bedacht het spel en nam de ontwerpkeuzes, Claude schreef de code." },
+  { id: "l2", n: "2", label: "DMS", x: 54, y: 53.6, side: "left", level: 1,
+    kicker: "Etappe 2",
+    title: "De lege lijst",
+    cv: "Consultant & Startup Scout · The Next Web, innovatieconsultancy",
+    text: [ "Goede gesprekken, maar geen aanmeldingen. Het doel is 200. Je schrijft je eigen outreachmail en kiest de alinea die erin moet." ],
+    mine: "De framingtest staat erin als trend, niet als bewijs. Met 41 startups en p = 0,08 claim ik geen oorzaak.",
+    used: "Hetzelfde artifact, met een eigen wereld per level en slepen met muis of vinger." },
+  { id: "l3", n: "3", label: "CCC", x: 64, y: 39.3, side: "left", level: 2,
+    kicker: "Etappe 3",
+    title: "118 kaartjes",
+    cv: "Consultant & Startup Scout · The Next Web, innovatieconsultancy",
+    text: [ "Een klant zoekt nieuwe technologie voor onderzoekers. Er staan 118 bedrijven op de lijst. Jij beoordeelt welke ertoe doen." ],
+    mine: "Een portfoliopagina vertelt wat ik deed. Een level laat je het zelf doen. Daarom werd het een level. De bedrijven zijn verzonnen, want het echte deck is van de klant.",
+    used: "Gebouwd op de echte criteria uit het project." },
+  { id: "wingman", n: "A", label: "Intake wingman", x: 82, y: 60.7, side: "left", tool: true,
+    kicker: "De tweede route",
+    title: "Intake wingman",
+    text: [
+      "Een skill die me helpt een eerste gesprek met een klant voor te bereiden. Ik doe het denkwerk. Claude stelt de vragen, toetst mijn antwoorden en verzint niets over de klant.",
+      "Ik testte hem op een verzonnen casus over een waterschap. Zonder skill gaf Claude 24 punten zonder keuze. Met skill kreeg ik eerst twee vragen, en dacht ik zelf. Een valstrik en een negatieve test deden wat ze moesten doen."
+    ],
+    mine: "Claude doet hier bewust niet het denkwerk. AI kan iets verzinnen dat geloofwaardig klinkt, en ik wil mijn eigen oordeel scherp houden. Dus stelt de skill de vragen, en kies ik.",
+    used: "Een skill, getest met een nulmeting, een valstrik en een negatieve test, en daarna verbeterd." },
+  { id: "buddy", n: "B", label: "Schrijfbuddy", x: 79, y: 36.6, side: "left", tool: true,
+    kicker: "De tweede route",
+    title: "Babette Mulders Schrijfbuddy",
+    text: [
+      "Een eerste lezer speelde de game zonder mijn hulp. Ik vroeg haar of het als een spel voelde. Dat deed het. Maar de tekst klonk volgens haar als AI, met dubbele punten en veel komma's.",
+      "Dat nam ik serieus. Tekst die als AI klinkt, kost het vertrouwen van de lezer, ook als de inhoud klopt. Dus maakte ik een skill voor Nederlandse tekst, genoemd naar mijn favoriete docent Nederlands. In level 1 gingen de dubbele punten van 11 naar 3."
+    ],
+    mine: "Eerst suggesties, dan pas aanpassen. Soms schrijf ik bewust anders, en die keuze wil ik zelf houden.",
+    used: "Een skill, plus vaste regels in mijn persoonlijke voorkeuren. Een skill laadt niet bij elk antwoord, voorkeuren wel." },
+  { id: "top", n: "", label: "Het uitzicht", x: 73, y: 16.4, side: "left",
+    kicker: "Bovenaan",
+    title: "Het uitzicht",
+    text: [
+      "Ik bouw met Claude, test wat ik bouw, en stuur bij op wat een echte gebruiker zegt.",
+      "En ik kies de functie die bij het probleem past. Een skill voor wat steeds terugkomt. Voorkeuren voor wat altijd moet gelden. Een artifact voor wat een ander moet kunnen gebruiken.",
+      "De volgende route loopt naar een echte klant."
+    ] }
+];
+
+/* ===== Motor: hetzelfde voor elk level ===== */
+const LETTERS = ["A","B","C","D"];
+const $stage = document.getElementById("stage");
+const $clues = document.getElementById("clues");
+const $track = document.getElementById("track");
+const $nav = document.getElementById("lvl");
+const $lane = document.querySelector(".lane");
+const $world = document.getElementById("world");
+const $funnel = document.getElementById("funnel");
+let fnTimer = null, fnShown = 0;
+let cdTimer = null, bkTimer = null;
+const reduced = () => { try { return matchMedia("(prefers-reduced-motion: reduce)").matches; } catch(e){ return false; } };
+
+const fresh = (level) => ({ level, screen: "intro", i: 0, picks: [], clues: [] });
+const played = new Set();
+let homeStop = "voet";
+let state = fresh(0);
+const L = () => LEVELS[state.level];
+const STOPS = () => L().scenes.length; // finish ligt op de laatste boei
+
+function isCounter(){ return !!L().world; }
+function meters(step){ return Math.round(2000 * step / STOPS()); }
+
+function buildLane(){
+  $track.querySelectorAll(".buoy,.tick,.boat").forEach(e => e.remove());
+  for (let s = 0; s <= STOPS(); s++){
+    const b = document.createElement("div");
+    b.className = "buoy"; b.dataset.step = s;
+    b.style.left = (100 * s / STOPS()) + "%";
+    $track.appendChild(b);
+  }
+  [0,500,1000,1500,2000].forEach(m => {
+    const t = document.createElement("div");
+    t.className = "tick"; t.textContent = m + " m";
+    t.style.left = (m / 20) + "%";
+    $track.appendChild(t);
+  });
+  const boat = document.createElement("div");
+  boat.className = "boat"; boat.id = "boat";
+  boat.innerHTML = `<svg viewBox="0 0 66 44" aria-hidden="true">
+    <g class="oar top"><line x1="33" y1="19" x2="33" y2="2"/><rect x="30" y="-3" width="6" height="7" rx="2.5"/></g>
+    <g class="oar bot"><line x1="33" y1="25" x2="33" y2="42"/><rect x="30" y="40" width="6" height="7" rx="2.5"/></g>
+    <path class="hull" d="M2 22 Q30 16.5 64 22 Q30 27.5 2 22 Z"/>
+    <rect class="seat" x="29" y="20.5" width="7" height="3" rx="1.5"/>
+  </svg>`;
+  $track.appendChild(boat);
+}
+
+function updateLane(){
+  const step = state.screen === "intro" ? 0
+    : state.screen === "finish" ? STOPS()
+    : state.i + (state.screen === "reveal" ? 1 : 0);
+  document.getElementById("boat").style.left = (100 * step / STOPS()) + "%";
+  $track.querySelectorAll(".buoy").forEach(b => b.classList.toggle("done", +b.dataset.step <= step && state.screen !== "intro"));
+}
+
+function worldState(){
+  const w = L().world;
+  if (state.screen === "intro") return w.intro;
+  if (state.screen === "finish") return w.finish;
+  const sc = L().scenes[state.i];
+  return (state.screen === "reveal" && sc.meterAfter) || sc.meter || w.intro;
+}
+
+function renderWorld(){
+  clearTimeout(cdTimer); clearTimeout(bkTimer); cancelAnimationFrame(bkTimer);
+  const w = L().world;
+  const counter = !!(w && w.type === "counter");
+  const funnel = !!(w && w.type === "funnel");
+  $lane.hidden = !!w;
+  $world.hidden = !counter;
+  $funnel.hidden = !funnel;
+  if (funnel){ renderFunnel(); return; }
+  if (!counter){ updateLane(); return; }
+  const m = worldState();
+  document.getElementById("wdays").textContent = m.days;
+  const $val = document.getElementById("wval");
+  const $fill = document.getElementById("wfill");
+  if (!m.breakthrough){
+    setBroken(false);
+    $val.textContent = m.val;
+    $fill.style.width = (100 * Math.min(m.fill || 0, 1)) + "%";
+    return;
+  }
+  if ($world.dataset.broken === "1"){ setBroken(true); $val.textContent = m.val; return; }
+  // Fase 1: de balk loopt vol tot het doel. Fase 2: hij breekt erdoorheen.
+  $fill.style.width = "100%";
+  $val.textContent = "200";
+  if (reduced()){ setBroken(true); $val.textContent = m.val; return; }
+  bkTimer = setTimeout(() => { setBroken(true); countUp($val, 200, 500, m.val); }, 1400);
+}
+
+function renderFunnel(){
+  const m = worldState();
+  const labels = ["Longlist", "In het boekje", "Verder onderzocht"];
+  document.getElementById("flabel").textContent = labels[m.stage];
+  document.querySelectorAll("#fsteps li").forEach((li, k) => {
+    li.classList.toggle("on", k === m.stage);
+    li.classList.toggle("past", k < m.stage);
+  });
+  const el = document.getElementById("fnum");
+  cancelAnimationFrame(fnTimer);
+  if (typeof m.n !== "number"){ el.textContent = String(m.n).replace("-", " à "); fnShown = 0; return; }
+  const from = fnShown, to = m.n;
+  if (reduced() || from === to){ el.textContent = to; fnShown = to; return; }
+  const t0 = performance.now(), dur = 900;
+  const step = (t) => {
+    const k = Math.min((t - t0) / dur, 1);
+    el.textContent = Math.round(from + (to - from) * k);
+    if (k < 1) fnTimer = requestAnimationFrame(step); else fnShown = to;
+  };
+  fnTimer = requestAnimationFrame(step);
+}
+
+function setBroken(b){
+  $world.dataset.broken = b ? "1" : "0";
+  $world.classList.toggle("broken", b);
+  document.getElementById("wgoal").style.left = b ? "40%" : "100%";
+  document.getElementById("wmax").textContent = b ? "500" : "";
+}
+
+function countUp(el, from, to, end){
+  const t0 = performance.now(), dur = 1000;
+  const step = (t) => {
+    const k = Math.min((t - t0) / dur, 1);
+    el.textContent = Math.round(from + (to - from) * k);
+    if (k < 1) bkTimer = requestAnimationFrame(step); else el.textContent = end;
+  };
+  bkTimer = requestAnimationFrame(step);
+}
+
+function runCountdown(sc){
+  if (!sc.countdown || reduced()) return;
+  const el = document.getElementById("wdays");
+  let k = 0;
+  const tick = () => {
+    el.textContent = sc.countdown[k++];
+    if (k < sc.countdown.length) cdTimer = setTimeout(tick, 750);
+  };
+  tick();
+}
+
+function renderNav(){
+  document.documentElement.dataset.level = state.home ? "home" : state.level;
+  $nav.innerHTML = state.home ? "" : `<button data-l="home">\u2190 Terug naar de berg</button>`;
+  $nav.querySelectorAll("button").forEach(b => b.onclick = () => goHome(["l1","l2","l3"][state.level]));
+}
+
+function goHome(stop){
+  state = Object.assign(fresh(0), { home: true });
+  if (stop) homeStop = stop;
+  render(); focusTop();
+}
+
+function renderHome(){
+  document.body.classList.add("is-home");
+  const $home = document.getElementById("home");
+  $home.hidden = false;
+  renderNav();
+  // De afgelegde route kleurt mee met de gespeelde levels.
+  const path = document.getElementById("routeDone");
+  const len = path.getTotalLength ? path.getTotalLength() : 1000;
+  const frac = [0, .38, .62, 1][played.size] || 0;
+  path.style.setProperty("--len", len);
+  path.style.setProperty("--off", len * (1 - frac));
+  const isDone = st => (st.level != null && played.has(st.level)) || (st.id === "top" && played.size === LEVELS.length);
+  document.getElementById("stops").innerHTML = STOPS_HOME.map(st => `
+    <button class="stop ${st.tool ? "tool" : ""} ${isDone(st) ? "done" : ""} ${st.id === homeStop ? "on" : ""} ${st.side === "left" ? "left" : ""}"
+      style="left:${st.x}%;top:${st.y}%" data-s="${st.id}" aria-label="${esc(st.label)}">
+      <span class="dot">${isDone(st) ? "\u2713" : esc(st.n)}</span><span class="lbl">${esc(st.label)}</span>
+    </button>`).join("");
+  document.getElementById("stoplist").innerHTML = STOPS_HOME.map(st =>
+    `<button role="tab" data-s="${st.id}" aria-selected="${st.id === homeStop}">${esc(st.label)}</button>`).join("");
+  $home.querySelectorAll("[data-s]").forEach(b => b.onclick = () => { homeStop = b.dataset.s; renderHome(); });
+  const st = STOPS_HOME.find(x => x.id === homeStop) || STOPS_HOME[0];
+  document.getElementById("panel").innerHTML = `
+    <div class="kicker">${esc(st.kicker)}</div>
+    <h2>${esc(st.title)}</h2>
+    ${st.cv ? `<p class="cv">Op mijn cv: ${esc(st.cv)}</p>` : ""}
+    ${paras(st.text)}
+    ${st.mine ? `<p class="used mine"><b>Mijn keuze.</b> ${esc(st.mine)}</p>` : ""}
+    ${st.used ? `<p class="used"><b>Gebruikt.</b> ${esc(st.used)}</p>` : ""}
+    ${st.level != null ? `<button class="btn" id="play">${played.has(st.level) ? "Nog een keer spelen" : "Speel level " + (st.level + 1)}</button>` : ""}
+    ${st.id === "voet" ? `<button class="btn" id="play0">Begin bij etappe 1</button>` : ""}`;
+  const pb = document.getElementById("play"); if (pb) pb.onclick = () => goLevel(st.level);
+  const p0 = document.getElementById("play0"); if (p0) p0.onclick = () => goLevel(0);
+}
+
+function goLevel(n){
+  state = fresh(n);
+  buildLane(); renderClues(); render(); focusTop();
+}
+
+function esc(s){ return String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
+function paras(arr){ return (arr || []).map(p => `<p>${esc(p)}</p>`).join(""); }
+
+function renderClues(newIndex){
+  if (!state.clues.length){
+    $clues.innerHTML = `<li class="empty" style="display:block">Nog leeg. Je eerste aanwijzing komt na je eerste keuze.</li>`;
+    return;
+  }
+  $clues.innerHTML = state.clues.map((c, k) => `<li${k === newIndex ? ' class="new"' : ""}>${esc(c)}</li>`).join("");
+}
+
+function render(){
+  if (state.home) return renderHome();
+  document.body.classList.remove("is-home");
+  document.getElementById("home").hidden = true;
+  renderNav();
+  renderScore();
+  renderWorld();
+  const s = state.screen;
+  if (s === "intro") return renderIntro();
+  if (s === "finish") return renderFinish();
+  renderScene();
+}
+
+function renderIntro(){
+  const lv = L();
+  $stage.innerHTML = `
+    <section class="story fade">
+      <div class="kicker">${esc(lv.kicker)}</div>
+      <h1>${esc(lv.title)}</h1>
+      ${lv.intro.map((p,k) => `<p class="${k===0?"lead":""}">${esc(p)}</p>`).join("")}
+      <p class="note">${esc(lv.howto)}</p>
+      <div class="row"><button class="btn" id="go">${esc(lv.startLabel || "Start")}</button></div>
+    </section>`;
+  document.getElementById("go").onclick = () => { state.screen = "scene"; state.i = 0; render(); focusTop(); };
+}
+
+function mailCard(m, chosen){
+  const line = p => `<p>${esc(p).replace(/\n/g, "<br>")}</p>`;
+  let slot = `<p class="slot" id="slot">[ sleep hier een alinea in ]</p>`;
+  if (chosen) slot = chosen.fill
+    ? `<div class="slot filled both">${chosen.fill.map(f => `<p><span class="label">${esc(f[0])}</span> ${esc(f[1])}</p>`).join("")}</div>`
+    : `<p class="slot filled">${esc(chosen.para || chosen.text)}</p>`;
+  return `<div class="mail">
+    <div class="mail-h">${esc(m.head)}</div>
+    ${m.before.map(line).join("")}
+    ${slot}
+    ${m.after.map(line).join("")}
+  </div>`;
+}
+
+function chips(sc, picked){
+  const lab = k => esc(sc.options[k].short || LETTERS[k]);
+  if (picked === sc.jesse) return `<div class="chips"><span class="chip match">Jij én Jesse: ${lab(picked)}</span></div>`;
+  return `<div class="chips"><span class="chip">Jij: ${lab(picked)}</span><span class="chip jesse">Jesse: ${lab(sc.jesse)}</span></div>`;
+}
+
+/* Slepen met muis of vinger; klikken blijft altijd werken */
+let suppressClick = false;
+function enableDrag(){
+  const slot = document.getElementById("slot");
+  if (!slot) return;
+  $stage.querySelectorAll(".opt[data-drag]").forEach(card => {
+    let start = null, ghost = null;
+    card.addEventListener("pointerdown", e => {
+      if (e.button > 0) return;
+      start = { x: e.clientX, y: e.clientY };
+      card.setPointerCapture(e.pointerId);
+    });
+    card.addEventListener("pointermove", e => {
+      if (!start) return;
+      if (!ghost && Math.hypot(e.clientX - start.x, e.clientY - start.y) > 6){
+        ghost = document.createElement("div");
+        ghost.className = "ghost";
+        ghost.textContent = card.querySelector(".txt").textContent;
+        document.body.appendChild(ghost);
+        card.classList.add("dragging");
+      }
+      if (ghost){
+        ghost.style.left = e.clientX + "px"; ghost.style.top = e.clientY + "px";
+        slot.classList.toggle("over", hit(slot, e));
+      }
+    });
+    const end = e => {
+      if (ghost){
+        suppressClick = true; setTimeout(() => suppressClick = false, 0);
+        const inSlot = hit(slot, e);
+        ghost.remove(); ghost = null; card.classList.remove("dragging"); slot.classList.remove("over");
+        if (inSlot) dropInto(slot, +card.dataset.k);
+      }
+      start = null;
+    };
+    card.addEventListener("pointerup", end);
+    card.addEventListener("pointercancel", end);
+  });
+}
+function hit(el, e){ const r = el.getBoundingClientRect(); return e.clientX >= r.left && e.clientX <= r.right && e.clientY >= r.top && e.clientY <= r.bottom; }
+function dropInto(slot, k){
+  const o = L().scenes[state.i].options[k];
+  slot.textContent = o.para || o.text;
+  slot.classList.add("filled", "landed");
+  setTimeout(() => choose(k), reduced() ? 0 : 450);
+}
+
+function renderScene(){
+  const lv = L();
+  const sc = lv.scenes[state.i];
+  if (sc.type === "sort") return renderSort(lv, sc);
+  const picked = state.screen === "reveal" ? state.picks[state.i] : null;
+  const opts = sc.options.map((o, k) => {
+    let cls = "opt", tag = "";
+    if (picked !== null){
+      if (k === sc.jesse && k === picked) { cls += " match"; tag = "Zelfde keuze als Jesse"; }
+      else if (k === sc.jesse) { cls += " jesse"; tag = "Wat Jesse deed"; }
+      else if (k === picked) { cls += " picked"; tag = "Jouw keuze"; }
+      else if (k === sc.keep) { cls += " kept"; tag = esc(sc.keepTag || ""); }
+    }
+    const hide = picked !== null && k !== picked && k !== sc.jesse && k !== sc.keep;
+    return `<button class="${cls}" data-k="${k}" ${o.drag && picked === null ? "data-drag" : ""} ${picked !== null ? "disabled" : ""} ${hide ? "hidden" : ""}>
+      <span class="k">${LETTERS[k]}</span>
+      <span><span class="txt">${esc(o.text)}</span>${tag ? `<span class="tag">${tag}</span>` : ""}</span>
+    </button>`;
+  }).join("");
+
+  let reveal = "";
+  if (picked !== null){
+    const mine = sc.options[picked];
+    const last = state.i === lv.scenes.length - 1;
+    reveal = `
+      <div class="reveal rise">
+        ${picked !== sc.jesse && mine.note ? `<div class="r-note"><span class="label">Over jouw keuze</span><p>${esc(mine.note)}</p></div>` : ""}
+        <div class="voice"><span class="who">Wat Jesse deed, en waarom</span><p>${esc(sc.why)}</p></div>
+        ${sc.extra ? `<div class="extra"><span class="label">${esc(sc.extraLabel || "Achter de hand")}</span><p>${esc(sc.extra)}</p></div>` : ""}
+        <button class="btn" id="next">${esc(last ? (lv.finishLabel || "Naar de finish") : (lv.nextLabel || "Verder"))}</button>
+      </div>`;
+  }
+
+  $stage.innerHTML = `
+    <section class="story ${picked === null ? "fade" : ""}">
+      <div class="kicker">Stap ${state.i + 1} van ${lv.scenes.length}${isCounter() ? "" : " · " + meters(state.i) + " m"}</div>
+      <h2>${esc(sc.title)}</h2>
+      ${picked === null ? paras(sc.text) : ""}
+      ${sc.mail ? mailCard(sc.mail, picked === null ? null : sc.options[picked]) : ""}
+      ${picked === null ? say(sc.quote, sc.quoteBy) + paras(sc.text2) : ""}
+      ${picked === null || !sc.mail ? `<p class="q">${esc(sc.question)}</p>` : ""}
+      ${picked === null && sc.dragHint ? `<p class="drag-hint">${esc(sc.dragHint)}</p>` : ""}
+      ${picked !== null && sc.mail ? chips(sc, picked) : `<div class="opts" role="group" aria-label="Keuzes">${opts}</div>`}
+      ${reveal}
+    </section>`;
+
+  if (picked === null){
+    $stage.querySelectorAll(".opt").forEach(b => b.onclick = () => { if (!suppressClick) choose(+b.dataset.k); });
+    enableDrag();
+  } else {
+    const n = document.getElementById("next");
+    n.onclick = () => {
+      const go = () => {
+        if (state.i === lv.scenes.length - 1) state.screen = "finish";
+        else { state.i++; state.screen = "scene"; }
+        render(); focusTop();
+      };
+      if (reduced()) return go();
+      n.disabled = true;
+      $stage.querySelector("section").classList.add("leave");
+      const boat = document.getElementById("boat");
+      if (boat && !isCounter()){ boat.classList.add("rowing"); setTimeout(() => boat.classList.remove("rowing"), 800); }
+      setTimeout(go, 280);
+    };
+    n.focus({ preventScroll: true });
+    bringIntoView(n);
+  }
+}
+
+function bringIntoView(n){
+  // Past alles in beeld, dan bovenaan beginnen; anders zo ver dat de knop zichtbaar is.
+  try {
+    const behavior = reduced() ? "auto" : "smooth";
+    const top = document.querySelector(".top");
+    const fits = n.getBoundingClientRect().bottom - top.getBoundingClientRect().top + 24 <= window.innerHeight;
+    if (fits) top.scrollIntoView({ block: "start", behavior });
+    else n.scrollIntoView({ block: "end", behavior });
+  } catch(e){}
+}
+
+function renderSort(lv, sc){
+  const done = state.screen === "reveal";
+  const dec = state.picks[state.i] || [];
+  const cards = sc.cards.map((c, k) => {
+    const d = dec[k];
+    const match = done && d === c.pass;
+    return `<div class="card ${match ? "match" : ""}" data-c="${k}">
+      <div class="card-h"><b>${esc(c.name)}</b><span class="step">${esc(c.step)}</span></div>
+      <p>${esc(c.desc)}</p>
+      <div class="card-btns">
+        <button data-c="${k}" data-v="1" class="${d === true ? "on" : ""}" ${done ? "disabled" : ""}>Door naar de shortlist</button>
+        <button data-c="${k}" data-v="0" class="${d === false ? "on" : ""}" ${done ? "disabled" : ""}>Valt af</button>
+      </div>
+      ${done ? `<p class="verdict"><strong>Volgens de criteria: ${c.pass ? "door" : "valt af"}.</strong> ${esc(c.reason)}</p>` : ""}
+    </div>`;
+  }).join("");
+  const n = sc.cards.length, same = sc.cards.filter((c, k) => dec[k] === c.pass).length;
+  const last = state.i === lv.scenes.length - 1;
+  $stage.innerHTML = `
+    <section class="story ${done || dec.length ? "" : "fade"}">
+      <div class="kicker">Stap ${state.i + 1} van ${lv.scenes.length}</div>
+      <h2>${esc(sc.title)}</h2>
+      ${done ? "" : paras(sc.text)}
+      <p class="q">${esc(sc.question)}</p>
+      ${done ? "" : `<p class="drag-hint">Beslis per bedrijf. Daarna zie je wat de criteria zeggen.</p>`}
+      <div class="cards">${cards}</div>
+      ${done ? `<div class="reveal rise">
+        <div class="chips"><span class="chip ${same === n ? "match" : ""}">Gelijk aan de criteria: ${same} van ${n}</span></div>
+        <div class="voice"><span class="who">Wat Jesse deed, en waarom</span><p>${esc(sc.why)}</p></div>
+        <button class="btn" id="next">${esc(last ? (lv.finishLabel || "Naar de finish") : (lv.nextLabel || "Verder"))}</button>
+      </div>` : ""}
+    </section>`;
+  if (!done){
+    $stage.querySelectorAll(".card-btns button").forEach(b => b.onclick = () => {
+      const k = +b.dataset.c, all = state.picks[state.i] || [];
+      all[k] = b.dataset.v === "1";
+      state.picks[state.i] = all;
+      if (sc.cards.every((c, j) => typeof all[j] === "boolean")){
+        state.clues.push(sc.clue);
+        state.screen = "reveal";
+        renderClues(state.clues.length - 1);
+        render();
+        $stage.querySelectorAll(".card.match").forEach(el => sparkle(el));
+        const nb = document.getElementById("next"); if (nb) bringIntoView(nb);
+      } else {
+        const y = window.scrollY; renderSort(lv, sc); window.scrollTo(0, y);
+      }
+    });
+  } else {
+    const nb = document.getElementById("next");
+    nb.onclick = () => {
+      const go = () => { if (last) state.screen = "finish"; else { state.i++; state.screen = "scene"; } render(); focusTop(); };
+      if (reduced()) return go();
+      nb.disabled = true;
+      $stage.querySelector("section").classList.add("leave");
+      setTimeout(go, 280);
+    };
+  }
+}
+
+function choose(k){
+  state.picks[state.i] = k;
+  state.clues.push(L().scenes[state.i].clue);
+  state.screen = "reveal";
+  renderClues(state.clues.length - 1);
+  render();
+  runCountdown(L().scenes[state.i]);
+  if (k === L().scenes[state.i].jesse) sparkle($stage.querySelector(".match"));
+}
+
+function sparkle(el){
+  if (!el || reduced()) return;
+  const r = el.getBoundingClientRect();
+  const colors = ["var(--good)", "var(--accent)", "var(--good)"];
+  for (let n = 0; n < 16; n++){
+    const sp = document.createElement("span");
+    sp.className = "spark";
+    const edge = Math.random();
+    sp.style.setProperty("--x", (edge * 100) + "%");
+    sp.style.setProperty("--y", (Math.random() < .5 ? 0 : 100) + "%");
+    const ang = Math.random() * Math.PI * 2, dist = 24 + Math.random() * 36;
+    sp.style.setProperty("--dx", Math.cos(ang) * dist + "px");
+    sp.style.setProperty("--dy", Math.sin(ang) * dist + "px");
+    sp.style.setProperty("--c", colors[n % colors.length]);
+    el.appendChild(sp);
+    setTimeout(() => sp.remove(), 1000);
+  }
+}
+
+function say(text, who){
+  if (!text) return "";
+  return `<figure class="say">${who ? `<figcaption>${esc(who)}</figcaption>` : ""}<blockquote>${esc(text)}</blockquote></figure>`;
+}
+
+function renderScore(){
+  const el = document.getElementById("score");
+  const done = L().scenes.map((sc, k) => [sc, state.picks[k]]).filter(([sc, p]) => typeof sc.jesse === "number" && typeof p === "number");
+  if (!done.length){ el.hidden = true; return; }
+  const same = done.filter(([sc, p]) => p === sc.jesse).length;
+  el.hidden = false;
+  el.textContent = `Zelfde keuze als Jesse: ${same} van ${done.length}`;
+}
+
+function renderFinish(){
+  const lv = L(), f = lv.finish;
+  played.add(state.level);
+  const hasNext = state.level < LEVELS.length - 1;
+  const rows = lv.scenes.map((sc, k) => {
+    const p = state.picks[k];
+    const first = `<tr><td class="m">${isCounter() ? k + 1 : meters(k) + " m"}</td><td>${esc(sc.title.replace(/[“”]/g,""))}</td>`;
+    if (sc.type === "sort"){
+      const same = sc.cards.filter((c, j) => p && p[j] === c.pass).length;
+      return first + `<td class="${same === sc.cards.length ? "same" : ""}">${same} van ${sc.cards.length}</td><td>criteria</td></tr>`;
+    }
+    const same = p === sc.jesse;
+    return first + `<td class="${same ? "same" : ""}">${p != null ? LETTERS[p] : "-"}</td><td>${LETTERS[sc.jesse]}</td></tr>`;
+  }).join("");
+  $stage.innerHTML = `
+    <section class="story fade">
+      <div class="kicker">${esc(lv.finishKicker || "Finish")}</div>
+      <h2>${esc(f.title)}</h2>
+      ${paras(f.text)}
+      ${say(f.quote, f.quoteBy)}
+      <div class="lesson"><span class="label">Het echte probleem</span><p>${esc(f.lesson)}</p></div>
+      <div class="after">
+        <div><span class="label">Daarna</span><p>${esc(f.epilogue)}</p></div>
+        <div><span class="label">Jesse, nu</span><p>${esc(f.now)}</p></div>
+      </div>
+      <details class="route"><summary>Jouw route naast die van Jesse</summary>
+        <div class="tablewrap"><table class="routes">
+          <thead><tr><th>${isCounter() ? "Stap" : "Baan"}</th><th>Moment</th><th>Jij</th><th>Jesse</th></tr></thead>
+          <tbody>${rows}</tbody></table></div>
+      </details>
+      <div class="row">
+        ${hasNext ? `<button class="btn" id="nextlvl">Naar level ${state.level + 2}</button>` : ""}
+        <button class="btn ${hasNext ? "ghost" : ""}" id="again">${esc(lv.againLabel || "Opnieuw")}</button>
+        <button class="btn ghost" id="tohome">Terug naar de berg</button>
+      </div>
+    </section>`;
+  document.getElementById("again").onclick = () => goLevel(state.level);
+  document.getElementById("tohome").onclick = () => goHome(state.level === LEVELS.length - 1 ? "top" : ["l1","l2","l3"][state.level + 1]);
+  if (hasNext) document.getElementById("nextlvl").onclick = () => goLevel(state.level + 1);
+}
+
+function focusTop(){
+  const h = $stage.querySelector("h1,h2");
+  if (h){ h.setAttribute("tabindex","-1"); h.focus({ preventScroll: true }); }
+  try { document.querySelector(".top").scrollIntoView({ block: "start", behavior: reduced() ? "auto" : "smooth" }); } catch(e){}
+}
+
+function start(saved){
+  if (saved && saved.state && LEVELS[saved.state.level ?? 0]) state = Object.assign(fresh(0), saved.state);
+  else state = Object.assign(fresh(0), { home: true });
+  buildLane(); renderClues(); render();
+}
+window.claude?.hot?.snapshot?.(() => ({ state }));
+window.claude?.hot?.ready ? window.claude.hot.ready(start) : start(window.claude?.hot?.data ?? {});
+</script>
+
+</body>
+</html>
