@@ -253,6 +253,14 @@ h2{font-size:clamp(28px,4.6vw,42px);letter-spacing:-.015em}
 .panel .used.mine{color:var(--fg);border-left:3px solid var(--mint);padding-left:10px}
 .panel .btn{margin-top:4px}
 
+/* Wie is wie */
+.cast{display:grid;gap:10px;margin:1.4em 0}
+.cast-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,210px),1fr));gap:12px}
+.cast-card{border:1px solid var(--line);border-radius:12px;background:var(--surface);padding:14px 16px;display:grid;gap:6px;align-content:start}
+.cast-card b{font-family:var(--display);font-size:18px}
+.cast-card p{margin:0;font-size:15px;line-height:1.5}
+.cast-card:last-child{border-color:var(--accent)}
+
 /* Dossier */
 .dossier{position:sticky;top:max(16px,env(safe-area-inset-top,0px));border:1px dashed var(--line);border-radius:14px;padding:18px}
 @media (max-width:840px){.dossier{position:static}}
@@ -351,6 +359,11 @@ const LEVEL1 = {
   intro: [
     "Je speelt Jesse, een jaar fulltime bestuurslid bij een roeivereniging met ruim 1.100 leden. Jouw portefeuille is het competitieroeien. Dat is 70 procent van de leden.",
     "De commissie die de eerstejaars begeleidt, zo'n 350 roeiers plus hun coaches, is de grootste van de vereniging. En er gaat iets mis."
+  ],
+  cast: [
+    { who: "Het bestuur", role: "Studenten die een jaar fulltime de vereniging leiden. Zij zeggen ja of nee tegen de plannen van de commissies." },
+    { who: "De commissie", role: "Acht vrijwilligers die de eerstejaars begeleiden, zo'n 350 roeiers en hun coaches. Ze bedenken trainingen, wedstrijden en borrels. Voor hun plannen hebben ze een ja van het bestuur nodig." },
+    { who: "Jij", role: "Je zit in het bestuur. Jouw taakgebied is het competitieroeien, en je bent het aanspreekpunt van de commissie. Je zit dus aan twee kanten van de tafel." }
   ],
   howto: "Jij bent Jesse, dus de keuzes staan in de ik-vorm. Er is geen fout antwoord, maar kies je wat Jesse echt deed, dan zie je dat meteen. Wat je leert, komt in je dossier.",
   scenes: [
@@ -1062,6 +1075,7 @@ function renderIntro(){
       <div class="kicker">${esc(lv.kicker)}</div>
       <h1>${esc(lv.title)}</h1>
       ${lv.intro.map((p,k) => `<p class="${k===0?"lead":""}">${esc(p)}</p>`).join("")}
+      ${lv.cast ? `<div class="cast"><span class="label">Wie is wie</span><div class="cast-row">${lv.cast.map(c => `<div class="cast-card"><b>${esc(c.who)}</b><p>${esc(c.role)}</p></div>`).join("")}</div></div>` : ""}
       <p class="note">${esc(lv.howto)}</p>
       <div class="row"><button class="btn" id="go">${esc(lv.startLabel || "Start")}</button></div>
     </section>`;
