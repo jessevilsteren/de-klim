@@ -247,7 +247,14 @@ h2{font-size:clamp(28px,4.6vw,42px);letter-spacing:-.015em}
 .stop .lbl{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap;background:color-mix(in srgb,var(--surface) 85%,transparent);padding:2px 6px;border-radius:4px}
 .stop.left{flex-direction:row-reverse}
 .stop:focus-visible .dot{outline:2px solid var(--accent);outline-offset:3px}
-@media (max-width:700px){.stop .lbl{display:none}}
+@media (max-width:700px){
+  .stop .lbl{display:none}
+  .stop .dot{width:18px;height:18px;font-size:10px;border-width:1.5px}
+  .stop.on .dot{transform:scale(1.15);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 35%,transparent)}
+  .stop .flag{width:16px;height:22px;transform:translateY(-9px)}
+  .stop.on .flag{transform:translateY(-9px) scale(1.15)}
+  .stop .flag line{stroke-width:2}
+}
 .stoplist{display:flex;flex-wrap:wrap;gap:6px}
 .stoplist button{appearance:none;font-family:var(--mono);font-size:12px;letter-spacing:.04em;color:var(--muted);background:transparent;border:1px solid var(--line);border-radius:999px;padding:5px 11px;cursor:pointer}
 .stoplist button[aria-selected="true"]{color:var(--accent-ink);background:var(--accent);border-color:var(--accent)}
