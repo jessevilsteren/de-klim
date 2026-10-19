@@ -231,28 +231,30 @@ h2{font-size:clamp(28px,4.6vw,42px);letter-spacing:-.015em}
 .m-route{fill:none;stroke:var(--muted);stroke-width:3;stroke-dasharray:2 10;stroke-linecap:round;opacity:.9}
 .m-route.alt{stroke:var(--mint);opacity:.7}
 .m-done{fill:none;stroke:var(--accent);stroke-width:4;stroke-linecap:round;stroke-dasharray:var(--len) var(--len);stroke-dashoffset:var(--off);transition:stroke-dashoffset 1.2s ease}
-.stop{position:absolute;transform:translate(-50%,-50%);display:flex;align-items:center;gap:8px;appearance:none;border:0;background:none;padding:0;color:var(--fg);cursor:pointer;font:inherit}
-.stop .dot{flex:none;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-family:var(--mono);font-size:12px;background:var(--surface);border:2px solid var(--muted);transition:transform .2s,background .2s,border-color .2s}
-.stop .flag{flex:none;width:32px;height:42px;display:block;transform:translateY(-16px);transition:transform .2s}
+.stop{position:absolute;width:0;height:0;appearance:none;border:0;background:none;padding:0;color:var(--fg);cursor:pointer;font:inherit}
+.stop .dot{position:absolute;left:0;top:0;transform:translate(-50%,-50%);width:26px;height:26px;box-sizing:border-box;border-radius:50%;display:grid;place-items:center;font-family:var(--mono);font-size:12px;background:var(--surface);border:2px solid var(--muted);transition:transform .2s,background .2s,border-color .2s}
+.stop .flag{position:absolute;left:0;top:0;width:32px;height:42px;display:block;transform-origin:16.7% 96.9%;transform:translate(-16.7%,-96.9%);transition:transform .2s}
 .stop .flag svg{width:100%;height:100%;overflow:visible}
 .stop .flag line{stroke:var(--fg);stroke-width:2.5;stroke-linecap:round}
 .stop .flag path{fill:var(--mint);transform-origin:5px 8px;animation:wave 2.4s ease-in-out infinite}
-.stop.on .flag{transform:translateY(-16px) scale(1.2)}
+.stop.on .flag{transform:translate(-16.7%,-96.9%) scale(1.2)}
 .stop.on .flag path{fill:var(--accent)}
 .stop:focus-visible .flag{outline:2px solid var(--accent);outline-offset:3px}
 @keyframes wave{0%,100%{transform:skewY(0)}50%{transform:skewY(-6deg)}}
 @media (prefers-reduced-motion:reduce){.stop .flag path{animation:none}}
 .stop.done .dot{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
-.stop.on .dot{transform:scale(1.25);border-color:var(--fg);box-shadow:0 0 0 4px color-mix(in srgb,var(--accent) 35%,transparent)}
-.stop .lbl{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap;background:color-mix(in srgb,var(--surface) 85%,transparent);padding:2px 6px;border-radius:4px}
-.stop.left{flex-direction:row-reverse}
+.stop.on .dot{transform:translate(-50%,-50%) scale(1.25);border-color:var(--fg);box-shadow:0 0 0 4px color-mix(in srgb,var(--accent) 35%,transparent)}
+.stop .lbl{position:absolute;top:0;left:22px;transform:translateY(-50%);font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap;background:color-mix(in srgb,var(--surface) 85%,transparent);padding:2px 6px;border-radius:4px}
+.stop.left .lbl{left:auto;right:22px}
+.stop.tool .lbl{top:-31px;left:34px}
+.stop.tool.left .lbl{left:auto;right:12px}
 .stop:focus-visible .dot{outline:2px solid var(--accent);outline-offset:3px}
 @media (max-width:700px){
   .stop .lbl{display:none}
   .stop .dot{width:18px;height:18px;font-size:10px;border-width:1.5px}
-  .stop.on .dot{transform:scale(1.15);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 35%,transparent)}
-  .stop .flag{width:16px;height:22px;transform:translateY(-9px)}
-  .stop.on .flag{transform:translateY(-9px) scale(1.15)}
+  .stop.on .dot{transform:translate(-50%,-50%) scale(1.15);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 35%,transparent)}
+  .stop .flag{width:16px;height:22px}
+  .stop.on .flag{transform:translate(-16.7%,-96.9%) scale(1.15)}
   .stop .flag line{stroke-width:2}
 }
 .stoplist{display:flex;flex-wrap:wrap;gap:6px}
