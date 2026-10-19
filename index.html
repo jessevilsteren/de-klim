@@ -233,7 +233,15 @@ h2{font-size:clamp(28px,4.6vw,42px);letter-spacing:-.015em}
 .m-done{fill:none;stroke:var(--accent);stroke-width:4;stroke-linecap:round;stroke-dasharray:var(--len) var(--len);stroke-dashoffset:var(--off);transition:stroke-dashoffset 1.2s ease}
 .stop{position:absolute;transform:translate(-50%,-50%);display:flex;align-items:center;gap:8px;appearance:none;border:0;background:none;padding:0;color:var(--fg);cursor:pointer;font:inherit}
 .stop .dot{flex:none;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-family:var(--mono);font-size:12px;background:var(--surface);border:2px solid var(--muted);transition:transform .2s,background .2s,border-color .2s}
-.stop.tool .dot{border-color:var(--mint)}
+.stop .flag{flex:none;width:32px;height:42px;display:block;transform:translateY(-16px);transition:transform .2s}
+.stop .flag svg{width:100%;height:100%;overflow:visible}
+.stop .flag line{stroke:var(--fg);stroke-width:2.5;stroke-linecap:round}
+.stop .flag path{fill:var(--mint);transform-origin:5px 8px;animation:wave 2.4s ease-in-out infinite}
+.stop.on .flag{transform:translateY(-16px) scale(1.2)}
+.stop.on .flag path{fill:var(--accent)}
+.stop:focus-visible .flag{outline:2px solid var(--accent);outline-offset:3px}
+@keyframes wave{0%,100%{transform:skewY(0)}50%{transform:skewY(-6deg)}}
+@media (prefers-reduced-motion:reduce){.stop .flag path{animation:none}}
 .stop.done .dot{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
 .stop.on .dot{transform:scale(1.25);border-color:var(--fg);box-shadow:0 0 0 4px color-mix(in srgb,var(--accent) 35%,transparent)}
 .stop .lbl{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap;background:color-mix(in srgb,var(--surface) 85%,transparent);padding:2px 6px;border-radius:4px}
@@ -304,7 +312,7 @@ h2{font-size:clamp(28px,4.6vw,42px);letter-spacing:-.015em}
   <div class="home-head">
     <p class="kicker">Een bouwweek met Claude</p>
     <h1>De klim</h1>
-    <p class="lead">Een week bouwen met Claude. Drie verhalen uit mijn cv, als spel. En twee skills die ik voor mijn eigen werk maakte. Klik op een punt van de berg.</p>
+    <p class="lead">Een week bouwen met Claude. Drie verhalen uit mijn cv, als spel. De vlaggen zijn skills die ik voor mijn eigen werk maakte. Klik op een punt van de berg.</p>
   </div>
   <div class="mtn" id="mtn">
     <svg viewBox="0 0 1000 560" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
@@ -796,7 +804,7 @@ const STOPS_HOME = [
     title: "Wie er klimt",
     text: [
       "Ik ben Jesse van Vilsteren. Ik ben nieuwsgierig en zie casussen en klanten als puzzels. Ik stel het liefst vragen, of ontleed informatie tot er een nieuw inzicht uit komt.",
-      "Deze berg laat zien hoe ik werk. In drie levels beleef je situaties die echt zijn gebeurd. Je speelt mij, kiest bij elke stap wat jij zou doen, en ziet daarna wat ik koos en waarom. Op de tweede route staan twee skills die ik bouwde, met hoe ik ze testte."
+      "Deze berg laat zien hoe ik werk. In drie levels beleef je situaties die echt zijn gebeurd. Je speelt mij en kiest bij elke stap wat jij zou doen. Daarna zie je wat ik koos en waarom. De vlaggen op de berg zijn skills die ik bouwde, met hoe ik ze testte."
     ] },
   { id: "basecamp", n: "", label: "Basecamp", x: 29, y: 81.3, side: "left",
     kicker: "Mijn werkplaats",
@@ -828,7 +836,7 @@ const STOPS_HOME = [
     mine: "Een portfoliopagina vertelt wat ik deed. Een level laat je het zelf doen. Daarom werd het een level. De bedrijven zijn verzonnen, want het echte deck is van de klant.",
     used: "Gebouwd op de echte criteria uit het project." },
   { id: "wingman", n: "A", label: "Intake wingman", x: 82, y: 60.7, side: "left", tool: true,
-    kicker: "De tweede route",
+    kicker: "Vlag op de berg · skill",
     title: "Intake wingman",
     text: [
       "Een skill die me helpt een eerste gesprek met een klant voor te bereiden. Ik doe het denkwerk. Claude stelt de vragen, toetst mijn antwoorden en verzint niets over de klant.",
@@ -837,7 +845,7 @@ const STOPS_HOME = [
     mine: "Claude doet hier bewust niet het denkwerk. AI kan iets verzinnen dat geloofwaardig klinkt, en ik wil mijn eigen oordeel scherp houden. Dus stelt de skill de vragen, en kies ik.",
     used: "Een skill, getest met een nulmeting, een valstrik en een negatieve test, en daarna verbeterd." },
   { id: "buddy", n: "B", label: "Schrijfbuddy", x: 79, y: 36.6, side: "left", tool: true,
-    kicker: "De tweede route",
+    kicker: "Vlag op de berg · skill",
     title: "Babette Mulders Schrijfbuddy",
     text: [
       "Een eerste lezer speelde de game zonder mijn hulp. Ik vroeg haar of het als een spel voelde. Dat deed het. Maar de tekst klonk volgens haar als AI, met dubbele punten en veel komma's.",
@@ -1024,7 +1032,7 @@ function renderHome(){
   document.getElementById("stops").innerHTML = STOPS_HOME.map(st => `
     <button class="stop ${st.tool ? "tool" : ""} ${isDone(st) ? "done" : ""} ${st.id === homeStop ? "on" : ""} ${st.side === "left" ? "left" : ""}"
       style="left:${st.x}%;top:${st.y}%" data-s="${st.id}" aria-label="${esc(st.label)}">
-      <span class="dot">${isDone(st) ? "\u2713" : esc(st.n)}</span><span class="lbl">${esc(st.label)}</span>
+      ${st.tool ? `<span class="flag" aria-hidden="true"><svg viewBox="0 0 24 32"><line x1="4" y1="2" x2="4" y2="31"/><path d="M5 3 L22 8 L5 14 Z"/></svg></span>` : `<span class="dot">${isDone(st) ? "\u2713" : esc(st.n)}</span>`}<span class="lbl">${esc(st.label)}</span>
     </button>`).join("");
   document.getElementById("stoplist").innerHTML = STOPS_HOME.map(st =>
     `<button role="tab" data-s="${st.id}" aria-selected="${st.id === homeStop}">${esc(st.label)}</button>`).join("");
