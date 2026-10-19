@@ -253,6 +253,10 @@ h2{font-size:clamp(28px,4.6vw,42px);letter-spacing:-.015em}
 .panel .used.mine{color:var(--fg);border-left:3px solid var(--mint);padding-left:10px}
 .panel .btn{margin-top:4px}
 
+/* Zo werkt het */
+.howto{border-left:3px solid var(--accent);padding:4px 0 4px 14px;margin:1.2em 0;display:grid;gap:4px;max-width:62ch}
+.howto p{margin:0}
+
 /* Wie is wie */
 .cast{display:grid;gap:10px;margin:1.4em 0}
 .cast-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,210px),1fr));gap:12px}
@@ -365,7 +369,7 @@ const LEVEL1 = {
     { who: "De commissie", role: "Acht vrijwilligers die de eerstejaars begeleiden, zo'n 350 roeiers en hun coaches. Ze bedenken trainingen, wedstrijden en borrels. Voor hun plannen hebben ze een ja van het bestuur nodig." },
     { who: "Jij", role: "Je zit in het bestuur. Jouw taakgebied is het competitieroeien, en je bent het aanspreekpunt van de commissie. Je zit dus aan twee kanten van de tafel." }
   ],
-  howto: "Jij bent Jesse, dus de keuzes staan in de ik-vorm. Er is geen fout antwoord, maar kies je wat Jesse echt deed, dan zie je dat meteen. Wat je leert, komt in je dossier.",
+  howto: "Je beleeft deze situatie als Jesse. Kies bij elke stap wat jij zou doen. Daarna zie je wat Jesse koos en waarom, en wat jouw keuze had kunnen doen. Koos je hetzelfde, dan kleurt je keuze groen. Wat je onderweg leert, komt in je dossier.",
   scenes: [
     {
       title: "De sfeer kelderde",
@@ -511,7 +515,7 @@ const LEVEL2 = {
     "Je speelt Jesse, in de innovatieconsultancy van The Next Web. De klus: startups werven voor Data Market Services, een door de EU gefinancierd programma voor de Europese data-economie. Je scout voor zeven internationale partners.",
     "Het doel: 200 aanmeldingen en 25 deelnemers. Een database is er niet. Je begint met een lege lijst."
   ],
-  howto: "Zelfde spelregels. Jij bent Jesse, en kies je wat hij echt deed, dan zie je dat meteen.",
+  howto: "Je beleeft deze campagne als Jesse. Kies bij elke stap wat jij zou doen. Daarna zie je wat Jesse koos en waarom. Koos je hetzelfde, dan kleurt je keuze groen.",
   scenes: [
     {
       title: "Het eerste bericht",
@@ -654,7 +658,7 @@ const LEVEL3 = {
     "Je speelt Jesse, in de innovatieconsultancy van The Next Web. De klant is Copyright Clearance Center, kortweg CCC. CCC verkoopt onderzoekers toegang tot wetenschappelijke artikelen, via een platform dat RightFind heet.",
     "CCC wil nieuwe digitale diensten aan dat platform toevoegen. Jij zoekt de technologiebedrijven die dat kunnen. Je werkt samen met Park 56. Zij zijn specialist in overnames in de uitgeefwereld, en kennen de markt van binnenuit."
   ],
-  howto: "Zelfde spelregels. In dit level beoordeel je ook zelf bedrijven, net als Jesse.",
+  howto: "Je beleeft dit project als Jesse. Kies bij elke stap wat jij zou doen, en beoordeel zelf bedrijven. Daarna zie je wat Jesse koos en waarom. Koos je hetzelfde, dan kleurt je keuze groen.",
   scenes: [
     {
       title: "De vraag",
@@ -792,7 +796,7 @@ const STOPS_HOME = [
     title: "Wie er klimt",
     text: [
       "Ik ben Jesse van Vilsteren. Ik ben nieuwsgierig en zie casussen en klanten als puzzels. Ik stel het liefst vragen, of ontleed informatie tot er een nieuw inzicht uit komt.",
-      "Deze berg laat zien hoe ik werk. In drie levels speel je mij, in situaties die echt zijn gebeurd. Op de tweede route staan twee skills die ik bouwde, met hoe ik ze testte."
+      "Deze berg laat zien hoe ik werk. In drie levels beleef je situaties die echt zijn gebeurd. Je speelt mij, kiest bij elke stap wat jij zou doen, en ziet daarna wat ik koos en waarom. Op de tweede route staan twee skills die ik bouwde, met hoe ik ze testte."
     ] },
   { id: "basecamp", n: "", label: "Basecamp", x: 29, y: 81.3, side: "left",
     kicker: "Mijn werkplaats",
@@ -1076,7 +1080,7 @@ function renderIntro(){
       <h1>${esc(lv.title)}</h1>
       ${lv.intro.map((p,k) => `<p class="${k===0?"lead":""}">${esc(p)}</p>`).join("")}
       ${lv.cast ? `<div class="cast"><span class="label">Wie is wie</span><div class="cast-row">${lv.cast.map(c => `<div class="cast-card"><b>${esc(c.who)}</b><p>${esc(c.role)}</p></div>`).join("")}</div></div>` : ""}
-      <p class="note">${esc(lv.howto)}</p>
+      <div class="howto"><span class="label">Zo werkt het</span><p>${esc(lv.howto)}</p></div>
       <div class="row"><button class="btn" id="go">${esc(lv.startLabel || "Start")}</button></div>
     </section>`;
   document.getElementById("go").onclick = () => { state.screen = "scene"; state.i = 0; render(); focusTop(); };
