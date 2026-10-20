@@ -179,7 +179,7 @@ h2{font-size:clamp(28px,4.6vw,42px);letter-spacing:-.015em}
 .drag-hint{margin:-.3em 0 .8em;font-family:var(--mono);font-size:12px;letter-spacing:.06em;color:var(--muted)}
 .opt[data-drag]{cursor:grab;touch-action:none}
 .opt.dragging{opacity:.4}
-.ghost{position:fixed;z-index:50;pointer-events:none;max-width:min(340px,80vw);padding:10px 14px;border-radius:10px;background:var(--accent);color:var(--accent-ink);font-size:14px;line-height:1.4;transform:translate(-20px,-50%) rotate(-2deg);box-shadow:0 10px 30px rgba(0,0,0,.35);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.dragghost{position:fixed;z-index:50;pointer-events:none;max-width:min(340px,80vw);padding:10px 14px;border-radius:10px;background:var(--accent);color:var(--accent-ink);font-size:14px;line-height:1.4;transform:translate(-20px,-50%) rotate(-2deg);box-shadow:0 10px 30px rgba(0,0,0,.35);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
 .slot{transition:background .2s,border-color .2s,transform .2s}
 .slot.over{background:color-mix(in srgb,var(--accent) 18%,transparent);transform:scale(1.02)}
 .slot.filled{font-family:var(--body);font-size:15px;color:var(--fg);border-style:solid;border-color:var(--accent)}
@@ -1139,7 +1139,7 @@ function enableDrag(){
       if (!start) return;
       if (!ghost && Math.hypot(e.clientX - start.x, e.clientY - start.y) > 6){
         ghost = document.createElement("div");
-        ghost.className = "ghost";
+        ghost.className = "dragghost";
         ghost.textContent = card.querySelector(".txt").textContent;
         document.body.appendChild(ghost);
         card.classList.add("dragging");
